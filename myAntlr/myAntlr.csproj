@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.props" Condition="Exists('..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DA6F2EA3-66A8-4BF7-A451-E85A4828794D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>myAntlr</RootNamespace>
+    <AssemblyName>myAntlr</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr4.Runtime.v4.5">
+      <HintPath>..\packages\Antlr4.Runtime.4.2.2-alpha001\lib\net45\Antlr4.Runtime.v4.5.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="astnodes\ASTNode.cs" />
+    <Compile Include="astnodes\ASTNodeBuilder.cs" />
+    <Compile Include="astnodes\builders\ClassDefBuilder.cs" />
+    <Compile Include="astnodes\builders\function\ContentBuilderStack.cs" />
+    <Compile Include="astnodes\builders\function\FunctionContentBuilder.cs" />
+    <Compile Include="astnodes\builders\function\FunctionDefBuilder.cs" />
+    <Compile Include="astnodes\builders\function\NestingReconstructor.cs" />
+    <Compile Include="astnodes\builders\function\ParameterListBuilder.cs" />
+    <Compile Include="astnodes\builders\function\ShadowStack.cs" />
+    <Compile Include="astnodes\builders\IdentifierDeclBuilder.cs" />
+    <Compile Include="astnodes\CodeLocation.cs" />
+    <Compile Include="astnodes\declarations\ClassDefStatement.cs" />
+    <Compile Include="astnodes\declarations\IdentifierDecl.cs" />
+    <Compile Include="astnodes\declarations\IdentifierDeclType.cs" />
+    <Compile Include="astnodes\DummyNameNode.cs" />
+    <Compile Include="astnodes\expressions\AdditiveExpression.cs" />
+    <Compile Include="astnodes\expressions\AndExpression.cs" />
+    <Compile Include="astnodes\expressions\Argument.cs" />
+    <Compile Include="astnodes\expressions\ArgumentList.cs" />
+    <Compile Include="astnodes\expressions\ArrayIndexing.cs" />
+    <Compile Include="astnodes\expressions\AssignmentExpr.cs" />
+    <Compile Include="astnodes\expressions\BinaryExpression.cs" />
+    <Compile Include="astnodes\expressions\BitAndExpression.cs" />
+    <Compile Include="astnodes\expressions\Callee.cs" />
+    <Compile Include="astnodes\expressions\CallExpression.cs" />
+    <Compile Include="astnodes\expressions\CastExpression.cs" />
+    <Compile Include="astnodes\expressions\CastTarget.cs" />
+    <Compile Include="astnodes\expressions\ConditionalExpression.cs" />
+    <Compile Include="astnodes\expressions\EqualityExpression.cs" />
+    <Compile Include="astnodes\expressions\ExclusiveOrExpression.cs" />
+    <Compile Include="astnodes\expressions\Expression.cs" />
+    <Compile Include="astnodes\expressions\Identifier.cs" />
+    <Compile Include="astnodes\expressions\IncDec.cs" />
+    <Compile Include="astnodes\expressions\IncDecOp.cs" />
+    <Compile Include="astnodes\expressions\InclusiveOrExpression.cs" />
+    <Compile Include="astnodes\expressions\InitializerList.cs" />
+    <Compile Include="astnodes\expressions\MemberAccess.cs" />
+    <Compile Include="astnodes\expressions\MultiplicativeExpression.cs" />
+    <Compile Include="astnodes\expressions\OrExpression.cs" />
+    <Compile Include="astnodes\expressions\PostfixExpression.cs" />
+    <Compile Include="astnodes\expressions\PrimaryExpression.cs" />
+    <Compile Include="astnodes\expressions\PtrMemberAccess.cs" />
+    <Compile Include="astnodes\expressions\RelationalExpression.cs" />
+    <Compile Include="astnodes\expressions\ShiftExpression.cs" />
+    <Compile Include="astnodes\expressions\Sizeof.cs" />
+    <Compile Include="astnodes\expressions\SizeofExpr.cs" />
+    <Compile Include="astnodes\expressions\SizeofOperand.cs" />
+    <Compile Include="astnodes\expressions\UnaryExpression.cs" />
+    <Compile Include="astnodes\expressions\UnaryOp.cs" />
+    <Compile Include="astnodes\expressions\UnaryOperator.cs" />
+    <Compile Include="astnodes\functionDef\DummyReturnType.cs" />
+    <Compile Include="astnodes\functionDef\FunctionDef.cs" />
+    <Compile Include="astnodes\functionDef\Parameter.cs" />
+    <Compile Include="astnodes\functionDef\ParameterList.cs" />
+    <Compile Include="astnodes\functionDef\ParameterType.cs" />
+    <Compile Include="astnodes\functionDef\ReturnType.cs" />
+    <Compile Include="astnodes\statements\BlockCloser.cs" />
+    <Compile Include="astnodes\statements\BlockStarter.cs" />
+    <Compile Include="astnodes\statements\BreakStatement.cs" />
+    <Compile Include="astnodes\statements\CompoundStatement.cs" />
+    <Compile Include="astnodes\statements\Condition.cs" />
+    <Compile Include="astnodes\statements\ContinueStatement.cs" />
+    <Compile Include="astnodes\statements\DoStatement.cs" />
+    <Compile Include="astnodes\statements\ElseStatement.cs" />
+    <Compile Include="astnodes\statements\ExpressionHolder.cs" />
+    <Compile Include="astnodes\statements\ExpressionHolderStatement.cs" />
+    <Compile Include="astnodes\statements\ExpressionStatement.cs" />
+    <Compile Include="astnodes\statements\ForInit.cs" />
+    <Compile Include="astnodes\statements\ForStatement.cs" />
+    <Compile Include="astnodes\statements\GotoStatement.cs" />
+    <Compile Include="astnodes\statements\IdentifierDeclStatement.cs" />
+    <Compile Include="astnodes\statements\IfStatement.cs" />
+    <Compile Include="astnodes\statements\JumpStatement.cs" />
+    <Compile Include="astnodes\statements\Label.cs" />
+    <Compile Include="astnodes\statements\ReturnStatement.cs" />
+    <Compile Include="astnodes\statements\Statement.cs" />
+    <Compile Include="astnodes\statements\SwitchStatement.cs" />
+    <Compile Include="astnodes\statements\WhileStatement.cs" />
+    <Compile Include="astwalking\ASTNodeVisitor.cs" />
+    <Compile Include="astwalking\ASTWalker.cs" />
+    <Compile Include="astwalking\ASTWalkerEvent.cs" />
+    <Compile Include="astwalking\FunctionNodeVisitor.cs" />
+    <Compile Include="SimpleRNG.cs" />
+    <Compile Include="cfg\ASTToCFGConverter.cs" />
+    <Compile Include="cfg\CFG.cs" />
+    <Compile Include="cfg\CFGEdge.cs" />
+    <Compile Include="cfg\CFGNode.cs" />
+    <Compile Include="cfg\Edge.cs" />
+    <Compile Include="cfg\Edges.cs" />
+    <Compile Include="cfg\JumpStatementVisitor.cs" />
+    <Compile Include="cfg\LoopBlock.cs" />
+    <Compile Include="cfg\StructuredFlowVisitor.cs" />
+    <Compile Include="cfg\SwitchBlock.cs" />
+    <Compile Include="cfg\SwitchLabels.cs" />
+    <Compile Include="DirectoryWalker.cs" />
+    <Compile Include="DummyTreeNode.cs" />
+    <Compile Include="FunctionNode.cs" />
+    <Compile Include="FunctionNodeList.cs" />
+    <Compile Include="FunctionTreeVisitor.cs" />
+    <Compile Include="misc\HashMapOfSets.cs" />
+    <Compile Include="misc\ListComparer.cs" />
+    <Compile Include="misc\MultiHashMap.cs" />
+    <Compile Include="misc\MyObservable.cs" />
+    <Compile Include="misc\MyObserver.cs" />
+    <Compile Include="misc\Pair.cs" />
+    <Compile Include="parsing\ANTLRFunctionParserDriver.cs" />
+    <Compile Include="parsing\ANTLRModuleParserDriver.cs" />
+    <Compile Include="parsing\ANTLRParserDriver.cs" />
+    <Compile Include="parsing\CommonParserContext.cs" />
+    <Compile Include="parsing\CompoundItemAssembler.cs" />
+    <Compile Include="parsing\FunctionParserInParsing.cs" />
+    <Compile Include="parsing\FunctionParseTreeListener.cs" />
+    <Compile Include="parsing\InitDeclContextWrapper.cs" />
+    <Compile Include="parsing\ModuleFunctionParserInterface.cs" />
+    <Compile Include="parsing\ModuleParserInParsing.cs" />
+    <Compile Include="parsing\ModuleParserTreeListener.cs" />
+    <Compile Include="parsing\ParserException.cs" />
+    <Compile Include="parsing\ParseTreeUtils.cs" />
+    <Compile Include="parsing\TokenSubStream.cs" />
+    <Compile Include="PCFG.cs" />
+    <Compile Include="PostPTSG.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PTSGprior.cs" />
+    <Compile Include="tests\cfgCreation\CFGCreatorTest.cs" />
+    <Compile Include="tests\parseTreeToAST\FunctionContentTestUtil.cs" />
+    <Compile Include="TSG.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Antlr4 Include="Module.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>myAntlr</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Function.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>myAntlr</CustomToolNamespace>
+    </Antlr4>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.props'))" />
+    <Error Condition="!Exists('..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.targets'))" />
+  </Target>
+  <Import Project="..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.targets" Condition="Exists('..\packages\Antlr4.4.2.2-alpha001\build\Antlr4.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
