@@ -10,7 +10,7 @@ namespace myAntlr
 {
     public class PriorPTSG
     {
-        Dictionary<TSG, double> pTSGprior = new Dictionary<TSG, double>();
+        Dictionary<TSG, double> priorPTSG = new Dictionary<TSG, double>();
         PCFG pCFG;
         HashSet<string> nonTerminal;
         double expandrate = 0.8; // p$, for each nonternimal node, probability to expand.
@@ -49,13 +49,13 @@ namespace myAntlr
             for (int i = 0; i < totalsample; i++)
             {
                 TSG t = buildTSG(root);
-                if (pTSGprior.ContainsKey(t))
+                if (priorPTSG.ContainsKey(t))
                 {
-                    pTSGprior[t] += pi[i];
+                    priorPTSG[t] += pi[i];
                 }
                 else
                 {
-                    pTSGprior.Add(t, pi[i]);
+                    priorPTSG.Add(t, pi[i]);
                 }
             }
         }
@@ -78,10 +78,10 @@ namespace myAntlr
         }
         public void outputPTSG()
         {
-            foreach (TSG t in pTSGprior.Keys)
+            foreach (TSG t in priorPTSG.Keys)
             {
-                if (pTSGprior[t] > 0.1)
-                    Console.WriteLine(t.getSequence() + ": " + pTSGprior[t]);
+                if (priorPTSG[t] > 0.1)
+                    Console.WriteLine(t.getSequence() + ": " + priorPTSG[t]);
             }
         }
         TSG buildTSG(string root)
@@ -117,7 +117,7 @@ namespace myAntlr
         // get prior distribution and alpha for PostPTSG.
         public Dictionary<TSG, double> getPrior()
         {
-            return pTSGprior;
+            return priorPTSG;
         }
         public double getalpha()
         {
