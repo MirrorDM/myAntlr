@@ -10,13 +10,13 @@ namespace myAntlr
 {
     public class PriorPTSG
     {
-        Dictionary<TSG, double> priorPTSG = new Dictionary<TSG, double>();
+        Dictionary<string, double> priorPTSG = new Dictionary<string, double>();
         PCFG pCFG;
         HashSet<string> nonTerminal;
-        double expandrate = 0.8; // p$, for each nonternimal node, probability to expand.
+        double expandrate = 0.9; // p$, for each nonternimal node, probability to expand.
         int totalsample = 1000; // how many times for Dirichlet process.
         
-        double alpha = 0.3; // Beta(1, alpha) distribution.
+        double alpha = 0.2; // Beta(1, alpha) distribution.
         
         double[] u;  // array of random number, u_i ~ Beta(1, alpha).
         double[] pi; // pi_k = (1 - u_k) * u_(k-1) * u_(k-2) * ... * u_1
@@ -49,13 +49,14 @@ namespace myAntlr
             for (int i = 0; i < totalsample; i++)
             {
                 TSG t = buildTSG(root);
-                if (priorPTSG.ContainsKey(t))
+                string seq = t.getSequence();
+                if (priorPTSG.ContainsKey(seq))
                 {
-                    priorPTSG[t] += pi[i];
+                    priorPTSG[seq] += pi[i];
                 }
                 else
                 {
-                    priorPTSG.Add(t, pi[i]);
+                    priorPTSG.Add(seq, pi[i]);
                 }
             }
         }
@@ -78,10 +79,10 @@ namespace myAntlr
         }
         public void outputPTSG()
         {
-            foreach (TSG t in priorPTSG.Keys)
+            foreach (string seq in priorPTSG.Keys)
             {
-                if (priorPTSG[t] > 0.1)
-                    Console.WriteLine(t.getSequence() + ": " + priorPTSG[t]);
+                if (priorPTSG[seq] > 0.1)
+                    Console.WriteLine(seq + ": " + priorPTSG[seq]);
             }
         }
         TSG buildTSG(string root)
@@ -115,7 +116,7 @@ namespace myAntlr
         }
 
         // get prior distribution and alpha for PostPTSG.
-        public Dictionary<TSG, double> getPrior()
+        public Dictionary<string, double> getPrior()
         {
             return priorPTSG;
         }

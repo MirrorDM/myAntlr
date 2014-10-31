@@ -54,6 +54,7 @@ namespace myAntlr
             }
 
             // binarization && compress chain
+            Console.WriteLine("Start binarization && compress chain");
             foreach (FunctionNode fnode in functionlist)
             {
                 fnode.structureblock();
@@ -61,28 +62,40 @@ namespace myAntlr
                 fnode.binarization();
                 //fnode.outputdot();
             }
-
+            Console.WriteLine("Finish binarization && compress chain");
 
             Console.WriteLine("total functions: " + functionlist.Count);
             //Thread.Sleep(1000);
 
+
+            Console.WriteLine("Start calculate PCFG");
+            Console.ReadLine(); //Pause
             FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
             funcvisitor.countContextFreeGrammar();
             //funcvisitor.printGrammar();
             PCFG pCFG = funcvisitor.getPCFG();
             pCFG.printGrammar();
+            Console.WriteLine("Finish calculate PCFG");
 
+
+
+            Console.WriteLine("Start calculate PriorPTSG");
+            Console.ReadLine(); //Pause
             PriorPTSG pTSGprior = new PriorPTSG(pCFG);
             pTSGprior.generatePTSG();
             pTSGprior.outputPTSG();
-
+            Console.WriteLine("Finish calculate PriorPTSG");
 
             //TSG tmp = funcvisitor.getOneTSGRandomly();
             //Console.WriteLine(tmp.getSequence());
 
+            Console.WriteLine("Start calculate PostPTSG");
+            Console.ReadLine(); //Pause
             PostPTSG postPTSG = new PostPTSG(funcvisitor, pTSGprior);
             postPTSG.calculatePostPTSG();
-            
+            postPTSG.getPostPTSG();
+            Console.WriteLine("Finish calculate PostPTSG");
+
             stw.Stop();
         }
 

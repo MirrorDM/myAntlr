@@ -1,9 +1,3 @@
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\bin\Debug\myAntlr.exe.config
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\bin\Debug\myAntlr.exe
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\bin\Debug\myAntlr.pdb
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\bin\Debug\Antlr4.Runtime.v4.5.dll
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\bin\Debug\Antlr4.Runtime.v4.5.xml
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.csprojResolveAssemblyReference.cache
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionLexer.cs
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionParser.cs
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionListener.cs
@@ -16,6 +10,3 @@ C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleBaseListener.cs
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleVisitor.cs
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleBaseVisitor.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.exe
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.pdb

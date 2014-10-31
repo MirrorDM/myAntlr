@@ -44,9 +44,9 @@ namespace myAntlr
         public TSG getOneTSGRandomly()
         {
             int listlenth = functiontreelist.Count();
-            Console.WriteLine("list lenth:" + listlenth);
+            //Console.WriteLine("list lenth:" + listlenth);
             int pos = randObj.Next(listlenth);
-            Console.WriteLine("random position:" + pos);
+            //Console.WriteLine("random position:" + pos);
             FunctionNode randomFunc = functiontreelist.ElementAt(pos);
             FunctionParser.StatementsContext root = randomFunc.functionstatements;
             return getTSGfromRoot(root);

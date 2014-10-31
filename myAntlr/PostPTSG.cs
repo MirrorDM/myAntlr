@@ -10,7 +10,7 @@ namespace myAntlr
     {
         Dictionary<string, int> TSGcount = new Dictionary<string, int>();
         Dictionary<string, int> rootcount = new Dictionary<string, int>();
-        Dictionary<TSG, double> p0;
+        Dictionary<string, double> p0;
         double alpha;
         FunctionTreeVisitor fvisitor;
         Random rand = new Random();
@@ -29,16 +29,33 @@ namespace myAntlr
         {
             for (int i = 0; i < getTSGtimes; i++)
             {
+                Console.WriteLine(i + " / " + getTSGtimes + "Processing.");
+
                 calculateOneTSG();
             }
         }
 
-        //public Dictionary<TSG, double> getPostPTSG()
-        //{
-        //    Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
+        public Dictionary<string, double> getPostPTSG()
+        {
+            Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
 
-        //}
-        string getStringRoot(string s)
+            foreach (string seq in TSGcount.Keys)
+            {
+                double postP = postProbablity(seq);
+
+                finalpTSG.Add(seq, postP);
+            }
+
+            foreach (var item in finalpTSG.OrderBy(i => i.Value))
+            {
+                Console.WriteLine(item.Key + item.Value);
+            }
+
+            Console.WriteLine("pTSG count" + finalpTSG.Count());
+
+            return finalpTSG;
+        }
+        static string getStringRoot(string s)
         {
             int len = s.Length;
             string root = "";
@@ -130,7 +147,7 @@ namespace myAntlr
             {
                 cur = queue.Dequeue();
 
-                cur.setIsNewFragment(1); // Set initial value.
+                cur.setIsNewFragment(0); // Set initial value.
 
                 cur_children = cur.getChildren();
                 foreach (TSG c in cur_children)
@@ -142,19 +159,27 @@ namespace myAntlr
         }
         double postProbability(TSG t)
         {
+            string seq = t.getSequence();
+            double res;
+            res = postProbablity(seq);
+            return res;
+        }
+        double postProbablity(string seq)
+        {
             // res = (count(t) + alpha * p0(t)) / (count(root(t)) + alpha)
             double res;
             int count_t = 0;
             double p0_t = 0;
-            string root_t = t.getName();
+            string root_t = getStringRoot(seq);
             double count_root_t = 0;
-            if (TSGcount.ContainsKey(t.getSequence()))
+            string t_seq = seq;
+            if (TSGcount.ContainsKey(t_seq))
             {
-                count_t = TSGcount[t.getSequence()];
+                count_t = TSGcount[t_seq];
             }
-            if (p0.ContainsKey(t))
+            if (p0.ContainsKey(t_seq))
             {
-                p0_t = p0[t];
+                p0_t = p0[t_seq];
             }
             if (rootcount.ContainsKey(root_t))
             {
@@ -166,13 +191,14 @@ namespace myAntlr
         }
         void updateTSGcount(TSG t)
         {
-            if (TSGcount.ContainsKey(t.getSequence()))
+            string seq = t.getSequence();
+            if (TSGcount.ContainsKey(seq))
             {
-                TSGcount[t.getSequence()]++;
+                TSGcount[seq]++;
             }
             else
             {
-                TSGcount.Add(t.getSequence(), 1);
+                TSGcount.Add(seq, 1);
             }
         }
         void updateRootcount(string s)
