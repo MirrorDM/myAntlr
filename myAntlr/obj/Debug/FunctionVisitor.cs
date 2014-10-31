@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:\Users\v-dazou\Documents\Visual Studio 2012\Projects\myAntlr\myAntlr\Function.g4 by ANTLR 4.2.2-SNAPSHOT
+// Generated from C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\Function.g4 by ANTLR 4.2.2-SNAPSHOT
 
 // Unreachable code detected
 #pragma warning disable 0162

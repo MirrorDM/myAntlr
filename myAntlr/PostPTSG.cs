@@ -18,7 +18,7 @@ namespace myAntlr
         const int getTSGtimes = 1000;
         const int iterationOfEachTSG = 100;
 
-        public PostPTSG(FunctionTreeVisitor f, PTSGprior prior)
+        public PostPTSG(FunctionTreeVisitor f, PriorPTSG prior)
         {
             fvisitor = f;
             p0 = prior.getPrior();

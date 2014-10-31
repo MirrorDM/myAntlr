@@ -72,7 +72,7 @@ namespace myAntlr
             PCFG pCFG = funcvisitor.getPCFG();
             pCFG.printGrammar();
 
-            PTSGprior pTSGprior = new PTSGprior(pCFG);
+            PriorPTSG pTSGprior = new PriorPTSG(pCFG);
             pTSGprior.generatePTSG();
             pTSGprior.outputPTSG();
 

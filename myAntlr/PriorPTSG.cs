@@ -8,7 +8,7 @@ using myAntlr.misc;
 
 namespace myAntlr
 {
-    public class PTSGprior
+    public class PriorPTSG
     {
         Dictionary<TSG, double> pTSGprior = new Dictionary<TSG, double>();
         PCFG pCFG;
@@ -22,7 +22,7 @@ namespace myAntlr
         double[] pi; // pi_k = (1 - u_k) * u_(k-1) * u_(k-2) * ... * u_1
         Random rand = new Random();
 
-        public PTSGprior(PCFG cfg)
+        public PriorPTSG(PCFG cfg)
         {
             pCFG = cfg;
             nonTerminal = cfg.nonTerminals();
