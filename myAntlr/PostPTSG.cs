@@ -116,7 +116,7 @@ namespace myAntlr
                 double random01 = rand.NextDouble();
 
                 // isNewFragment = 0.
-                if (random01 < z0rate)
+                if (random01 <= z0rate)
                 {
                     cur.setIsNewFragment(0);
                     // update join
