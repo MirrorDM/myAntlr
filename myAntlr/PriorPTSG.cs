@@ -14,9 +14,9 @@ namespace myAntlr
         PCFG pCFG;
         HashSet<string> nonTerminal;
         double expandrate = 0.9; // p$, for each nonternimal node, probability to expand.
-        int totalsample = 1000; // how many times for Dirichlet process.
+        int totalsample = 10000; // how many times for Dirichlet process.
         
-        double alpha = 0.2; // Beta(1, alpha) distribution.
+        double alpha = 0.01; // Beta(1, alpha) distribution.
         
         double[] u;  // array of random number, u_i ~ Beta(1, alpha).
         double[] pi; // pi_k = (1 - u_k) * u_(k-1) * u_(k-2) * ... * u_1
@@ -39,8 +39,11 @@ namespace myAntlr
             //generatePTSG(s);
 
             // For use, every root.
+            Console.WriteLine("alpha = " + alpha + ", " + totalsample + " for each root.");
+            int i = 0, nonterminalCount = nonTerminal.Count();
             foreach (string s in nonTerminal)
             {
+                Console.WriteLine("Dirichlet Process for node: " + s + ", " + (i++) + " / " + nonterminalCount);
                 generatePTSG(s);
             }
         }

@@ -15,8 +15,8 @@ namespace myAntlr
         FunctionTreeVisitor fvisitor;
         Random rand = new Random();
 
-        const int getTSGtimes = 1000;
-        const int iterationOfEachTSG = 100;
+        const int getTSGtimes = 100000;
+        const int iterationOfEachTSG = 1;
 
         public PostPTSG(FunctionTreeVisitor f, PriorPTSG prior)
         {
@@ -73,9 +73,10 @@ namespace myAntlr
         {
             TSG currentTSG = fvisitor.getOneTSGRandomly();
             
-            setInitialZ(currentTSG);
+            // Save the state of TSG.
+            // setInitialZ(currentTSG); 
 
-            // How many iteration?
+            // How many iteration? Just one.
             for (int i = 0; i < iterationOfEachTSG; i++)
             {
                 gibbsSampler(currentTSG);
@@ -147,7 +148,12 @@ namespace myAntlr
             {
                 cur = queue.Dequeue();
 
-                cur.setIsNewFragment(0); // Set initial value.
+                // Set initial value.
+                double initialrate = 0.5;
+                if (rand.NextDouble() > initialrate)
+                    cur.setIsNewFragment(0);
+                else
+                    cur.setIsNewFragment(1);
 
                 cur_children = cur.getChildren();
                 foreach (TSG c in cur_children)
