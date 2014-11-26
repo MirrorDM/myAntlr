@@ -170,6 +170,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PriorPTSG.cs" />
+    <Compile Include="SourceASTs.cs" />
     <Compile Include="tests\cfgCreation\CFGCreatorTest.cs" />
     <Compile Include="tests\parseTreeToAST\FunctionContentTestUtil.cs" />
     <Compile Include="TSG.cs" />

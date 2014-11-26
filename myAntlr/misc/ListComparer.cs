@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace myAntlr.misc
 {
+    [Serializable]
     public class ListComparer<T> : IEqualityComparer<List<T>>
     {
         public bool Equals(List<T> x, List<T> y)

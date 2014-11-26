@@ -8,6 +8,7 @@ using myAntlr.misc;
 
 namespace myAntlr
 {
+    [Serializable]
     public class PCFG
     {
         Dictionary<List<string>, int> pCFGlist = new Dictionary<List<string>, int>(new ListComparer<string>());

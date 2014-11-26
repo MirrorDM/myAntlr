@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace myAntlr
 {
+    [Serializable]
     public class TSG
     {
         string name;

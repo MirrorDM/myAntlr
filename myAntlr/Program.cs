@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
@@ -25,6 +27,9 @@ namespace myAntlr
 
         static void Main(string[] args)
         {
+            IFormatter serializationformatter;
+            Stream serializationstream;
+
 
             Stopwatch stw = new Stopwatch();
             stw.Start();
@@ -68,6 +73,7 @@ namespace myAntlr
             //Thread.Sleep(1000);
 
 
+            // ############### Start calculate PCFG ########################
             Console.WriteLine("Start calculate PCFG");
             Console.ReadLine(); //Pause
             FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
@@ -75,23 +81,51 @@ namespace myAntlr
             //funcvisitor.printGrammar();
             PCFG pCFG = funcvisitor.getPCFG();
             pCFG.printGrammar();
+            // Start Serialize PCFG
+            serializationformatter = new BinaryFormatter();
+            serializationstream = new FileStream("PCFG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+            serializationformatter.Serialize(serializationstream, pCFG);
+            serializationstream.Close();
+            // Finish Serialize PCFG
             Console.WriteLine("Finish calculate PCFG");
+            // ############### Finish calculate PCFG #######################
 
 
+            // ############### Start calculate SourceASTs ##################
+            SourceASTs sourceASTs = new SourceASTs(funcvisitor);
+            // Start Serialize SourceASTs
+            serializationformatter = new BinaryFormatter();
+            serializationstream = new FileStream("SourceASTs.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+            serializationformatter.Serialize(serializationstream, sourceASTs);
+            serializationstream.Close();
+            // Finish Serialize SourceASTs
+            // ############### Finish calculate SourceASTs
 
+
+            // ############### Start calculate PriorPTSG ###################
+            PriorPTSG pTSGprior;
             Console.WriteLine("Start calculate PriorPTSG");
             Console.ReadLine(); //Pause
-            PriorPTSG pTSGprior = new PriorPTSG(pCFG);
+            pTSGprior = new PriorPTSG(pCFG);
             pTSGprior.generatePTSG();
             pTSGprior.outputPTSG();
+            // Start Serialize PriorPTSG
+            serializationformatter = new BinaryFormatter();
+            serializationstream = new FileStream("PriorPTSG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+            serializationformatter.Serialize(serializationstream, pTSGprior);
+            serializationstream.Close();
+            // Finish Serialize PriorPTSG 
             Console.WriteLine("Finish calculate PriorPTSG");
+            // ############### Finish calculate PriorPTSG ##################
+
+
 
             //TSG tmp = funcvisitor.getOneTSGRandomly();
             //Console.WriteLine(tmp.getSequence());
 
             Console.WriteLine("Start calculate PostPTSG");
             Console.ReadLine(); //Pause
-            PostPTSG postPTSG = new PostPTSG(funcvisitor, pTSGprior);
+            PostPTSG postPTSG = new PostPTSG(sourceASTs, pTSGprior);
             postPTSG.calculatePostPTSG();
             postPTSG.getPostPTSG();
             Console.WriteLine("Finish calculate PostPTSG");

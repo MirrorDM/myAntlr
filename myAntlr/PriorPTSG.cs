@@ -8,13 +8,14 @@ using myAntlr.misc;
 
 namespace myAntlr
 {
+    [Serializable]
     public class PriorPTSG
     {
         Dictionary<string, double> priorPTSG = new Dictionary<string, double>();
         PCFG pCFG;
         HashSet<string> nonTerminal;
         double expandrate = 0.9; // p$, for each nonternimal node, probability to expand.
-        int totalsample = 10000; // how many times for Dirichlet process.
+        int totalsample = 1000; // how many times for Dirichlet process.
         
         double alpha = 0.01; // Beta(1, alpha) distribution.
         
@@ -32,7 +33,7 @@ namespace myAntlr
 
         public void generatePTSG()
         {
-            calculateDPparameters();
+            // calculateDPparameters();
 
             // For test, test one root.
             //string s = nonTerminal.First();
@@ -44,6 +45,7 @@ namespace myAntlr
             foreach (string s in nonTerminal)
             {
                 Console.WriteLine("Dirichlet Process for node: " + s + ", " + (i++) + " / " + nonterminalCount);
+                calculateDPparameters();
                 generatePTSG(s);
             }
         }

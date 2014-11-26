@@ -41,6 +41,19 @@ namespace myAntlr
         {
             return pContextFreeGrammar;
         }
+        public List<TSG> getAllTSG()
+        {
+            int listlenth = functiontreelist.Count();
+            int pos = 0;
+            List<TSG> TSGs = new List<TSG>();
+            for (pos = 0; pos < listlenth; pos++)
+            {
+                FunctionNode curfunc = functiontreelist.ElementAt(pos);
+                FunctionParser.StatementsContext root = curfunc.functionstatements;
+                TSGs.Add(getTSGfromRoot(root));
+            }
+            return TSGs;
+        }
         public TSG getOneTSGRandomly()
         {
             int listlenth = functiontreelist.Count();

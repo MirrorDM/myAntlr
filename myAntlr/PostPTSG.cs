@@ -12,15 +12,15 @@ namespace myAntlr
         Dictionary<string, int> rootcount = new Dictionary<string, int>();
         Dictionary<string, double> p0;
         double alpha;
-        FunctionTreeVisitor fvisitor;
+        SourceASTs asts;
         Random rand = new Random();
 
         const int getTSGtimes = 100000;
         const int iterationOfEachTSG = 1;
 
-        public PostPTSG(FunctionTreeVisitor f, PriorPTSG prior)
+        public PostPTSG(SourceASTs sourceasts, PriorPTSG prior)
         {
-            fvisitor = f;
+            asts = sourceasts;
             p0 = prior.getPrior();
             alpha = prior.getalpha();
         }
@@ -71,7 +71,7 @@ namespace myAntlr
         }
         void calculateOneTSG()
         {
-            TSG currentTSG = fvisitor.getOneTSGRandomly();
+            TSG currentTSG = asts.getOneTSGRandomly();
             
             // Save the state of TSG.
             // setInitialZ(currentTSG); 
