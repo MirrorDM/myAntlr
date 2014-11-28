@@ -38,7 +38,7 @@ namespace myAntlr
             string pt = "C:\\Users\\v-dazou\\Documents\\sound";
             DirectoryWalker walker = new DirectoryWalker(pt);
             // for test.
-            walker.setMaxDepth(0);
+            walker.setMaxDepth(1);
             List<string> files = walker.getAllfiles();
             Console.WriteLine(files.Count);
 
@@ -74,12 +74,13 @@ namespace myAntlr
 
 
             // ############### Start calculate PCFG ########################
+            PCFG pCFG;
             Console.WriteLine("Start calculate PCFG");
             Console.ReadLine(); //Pause
             FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
             funcvisitor.countContextFreeGrammar();
             //funcvisitor.printGrammar();
-            PCFG pCFG = funcvisitor.getPCFG();
+            pCFG = funcvisitor.getPCFG();
             pCFG.printGrammar();
             // Start Serialize PCFG
             serializationformatter = new BinaryFormatter();
@@ -92,14 +93,17 @@ namespace myAntlr
 
 
             // ############### Start calculate SourceASTs ##################
-            SourceASTs sourceASTs = new SourceASTs(funcvisitor);
+            SourceASTs sourceASTs;
+            Console.WriteLine("Start calculate SourceASTs");
+            Console.ReadLine(); //Pause
+            sourceASTs = new SourceASTs(funcvisitor);
             // Start Serialize SourceASTs
             serializationformatter = new BinaryFormatter();
             serializationstream = new FileStream("SourceASTs.bin", FileMode.Create, FileAccess.Write, FileShare.None);
             serializationformatter.Serialize(serializationstream, sourceASTs);
             serializationstream.Close();
             // Finish Serialize SourceASTs
-            // ############### Finish calculate SourceASTs
+            // ############### Finish calculate SourceASTs #################
 
 
             // ############### Start calculate PriorPTSG ###################

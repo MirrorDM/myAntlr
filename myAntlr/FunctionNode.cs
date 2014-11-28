@@ -81,6 +81,9 @@ namespace myAntlr
                     ParserRuleContext currentstmt;
                     for (int i = index + 2; i < stmts.children.Count(); i++)
                     {
+                        // Handle Error: Can not cast "Antlr4.Runtime.Tree.TerminalNodeImpl" to "Antlr4.Runtime.ParserRuleContext"
+                        if (stmts.children.ElementAt(i) is TerminalNodeImpl)
+                            continue;
                         currentstmt = (ParserRuleContext)stmts.children.ElementAt(i);
                         if (currentstmt.children.First() is FunctionParser.Opening_curlyContext)
                         {
@@ -106,11 +109,22 @@ namespace myAntlr
                     List<IParseTree> removelist = new List<IParseTree>();
                     for (int i = index + 1; i <= closecurlypos; i++)
                     {
-                        currentstmt = (ParserRuleContext)stmts.children.ElementAt(i);
-                        // stmts.children.Remove(currentstmt);
-                        removelist.Add(currentstmt);
-                        node.children.Add(currentstmt);
-                        currentstmt.parent = node;
+                        // Handle Error: Can not cast "Antlr4.Runtime.Tree.TerminalNodeImpl" to "Antlr4.Runtime.ParserRuleContext"
+                        if (stmts.children.ElementAt(i) is TerminalNodeImpl)
+                        {
+                            TerminalNodeImpl terminalnode = (TerminalNodeImpl)stmts.children.ElementAt(i);
+                            removelist.Add(terminalnode);
+                            node.children.Add(terminalnode);
+                            terminalnode.parent = node;
+                        }
+                        else
+                        {
+                            currentstmt = (ParserRuleContext)stmts.children.ElementAt(i);
+                            // stmts.children.Remove(currentstmt);
+                            removelist.Add(currentstmt);
+                            node.children.Add(currentstmt);
+                            currentstmt.parent = node;
+                        }
                     }
                     foreach (IParseTree ipt in removelist)
                     {

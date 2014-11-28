@@ -51,6 +51,7 @@ namespace myAntlr
                 FunctionNode curfunc = functiontreelist.ElementAt(pos);
                 FunctionParser.StatementsContext root = curfunc.functionstatements;
                 TSGs.Add(getTSGfromRoot(root));
+                Console.WriteLine(pos + " / " + listlenth);
             }
             return TSGs;
         }
