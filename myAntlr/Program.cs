@@ -44,82 +44,122 @@ namespace myAntlr
 
             int currentfile = 0;
 
-            int filecount = files.Count;
-            for (int i = 0; i < filecount; i++)
-            {
-                string filepath = files[i];
-                FunctionNodeList nodelist = new FunctionNodeList(filepath);
-                List<FunctionNode> filenodes = nodelist.getFunctionNodeListFromFile();
-                functionlist.AddRange(filenodes);
-                
+            int useAntlr = 0;
 
-                Console.Write(currentfile + " / " + files.Count + " ");
-                currentfile++;
-                Console.WriteLine("time: " + stw.Elapsed.Hours.ToString("D2") + ":" + stw.Elapsed.Minutes.ToString("D2") + ":" + stw.Elapsed.Seconds.ToString("D2"));
+            if (useAntlr == 1)
+            {
+                int filecount = files.Count;
+                for (int i = 0; i < filecount; i++)
+                {
+                    string filepath = files[i];
+                    FunctionNodeList nodelist = new FunctionNodeList(filepath);
+                    List<FunctionNode> filenodes = nodelist.getFunctionNodeListFromFile();
+                    functionlist.AddRange(filenodes);
+
+
+                    Console.Write(currentfile + " / " + files.Count + " ");
+                    currentfile++;
+                    Console.WriteLine("time: " + stw.Elapsed.Hours.ToString("D2") + ":" + stw.Elapsed.Minutes.ToString("D2") + ":" + stw.Elapsed.Seconds.ToString("D2"));
+                }
+
+                // binarization && compress chain
+                Console.WriteLine("Start binarization && compress chain");
+                foreach (FunctionNode fnode in functionlist)
+                {
+                    fnode.structureblock();
+                    fnode.compresschain();
+                    fnode.binarization();
+                    //fnode.outputdot();
+                }
+                Console.WriteLine("Finish binarization && compress chain");
+
+                Console.WriteLine("total functions: " + functionlist.Count);
+                //Thread.Sleep(1000);
             }
 
-            // binarization && compress chain
-            Console.WriteLine("Start binarization && compress chain");
-            foreach (FunctionNode fnode in functionlist)
-            {
-                fnode.structureblock();
-                fnode.compresschain();
-                fnode.binarization();
-                //fnode.outputdot();
-            }
-            Console.WriteLine("Finish binarization && compress chain");
-
-            Console.WriteLine("total functions: " + functionlist.Count);
-            //Thread.Sleep(1000);
-
-
-            // ############### Start calculate PCFG ########################
+            
+            // ############### Start calculate PCFG & SourceASTs ################
             PCFG pCFG;
-            Console.WriteLine("Start calculate PCFG");
-            Console.ReadLine(); //Pause
-            FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
-            funcvisitor.countContextFreeGrammar();
-            //funcvisitor.printGrammar();
-            pCFG = funcvisitor.getPCFG();
-            pCFG.printGrammar();
-            // Start Serialize PCFG
-            serializationformatter = new BinaryFormatter();
-            serializationstream = new FileStream("PCFG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
-            serializationformatter.Serialize(serializationstream, pCFG);
-            serializationstream.Close();
-            // Finish Serialize PCFG
-            Console.WriteLine("Finish calculate PCFG");
-            // ############### Finish calculate PCFG #######################
-
-
-            // ############### Start calculate SourceASTs ##################
             SourceASTs sourceASTs;
-            Console.WriteLine("Start calculate SourceASTs");
-            Console.ReadLine(); //Pause
-            sourceASTs = new SourceASTs(funcvisitor);
-            // Start Serialize SourceASTs
-            serializationformatter = new BinaryFormatter();
-            serializationstream = new FileStream("SourceASTs.bin", FileMode.Create, FileAccess.Write, FileShare.None);
-            serializationformatter.Serialize(serializationstream, sourceASTs);
-            serializationstream.Close();
-            // Finish Serialize SourceASTs
-            // ############### Finish calculate SourceASTs #################
+            // calculate & write
+            if (useAntlr == 1)
+            {
+                // PCFG
+                Console.WriteLine("Start calculate PCFG, Press Enter to continue.");
+                Console.ReadLine(); //Pause
+                FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
+                funcvisitor.countContextFreeGrammar();
+                //funcvisitor.printGrammar();
+                pCFG = funcvisitor.getPCFG();
+                pCFG.printGrammar();
+                // Start Serialize PCFG
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("PCFG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                serializationformatter.Serialize(serializationstream, pCFG);
+                serializationstream.Close();
+                Console.WriteLine("Finish calculate PCFG.");
 
+                // SourceASTs
+                Console.WriteLine("Start calculate SourceASTs, Press Enter to continue.");
+                Console.ReadLine(); //Pause
+                sourceASTs = new SourceASTs(funcvisitor);
+                // Start Serialize SourceASTs
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("SourceASTs.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                serializationformatter.Serialize(serializationstream, sourceASTs);
+                serializationstream.Close();
+                Console.WriteLine("Finish calculate SourceASTs.");
+            }
+            // read from disk
+            else
+            {
+                Console.WriteLine("Start read PCFG from PCFG.bin, Press Enter to continue.");
+                Console.ReadLine(); //Pause
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("PCFG.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                pCFG = (PCFG)serializationformatter.Deserialize(serializationstream);
+                serializationstream.Close();
+                Console.WriteLine("Finish read PCFG.");
+
+                Console.WriteLine("Start read SourceASTs from SourceASTs.bin, Press Enter to continue.");
+                Console.ReadLine(); //Pause
+                Console.WriteLine("Reading SourceASTs.....");
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("SourceASTs.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                sourceASTs = (SourceASTs)serializationformatter.Deserialize(serializationstream);
+                serializationstream.Close();
+                Console.WriteLine("Finish read SourceASTs.");
+            }
+            // ############### Finish calculate & SourceASTs ###############
 
             // ############### Start calculate PriorPTSG ###################
+            int calculatePriorPTSG = 0;
             PriorPTSG pTSGprior;
-            Console.WriteLine("Start calculate PriorPTSG");
-            Console.ReadLine(); //Pause
-            pTSGprior = new PriorPTSG(pCFG);
-            pTSGprior.generatePTSG();
-            pTSGprior.outputPTSG();
-            // Start Serialize PriorPTSG
-            serializationformatter = new BinaryFormatter();
-            serializationstream = new FileStream("PriorPTSG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
-            serializationformatter.Serialize(serializationstream, pTSGprior);
-            serializationstream.Close();
-            // Finish Serialize PriorPTSG 
-            Console.WriteLine("Finish calculate PriorPTSG");
+            if (calculatePriorPTSG == 1 || useAntlr == 1)
+            {
+                Console.WriteLine("Start calculate PriorPTSG");
+                Console.ReadLine(); //Pause
+                pTSGprior = new PriorPTSG(pCFG);
+                pTSGprior.generatePTSG();
+                pTSGprior.outputPTSG();
+                // Start Serialize PriorPTSG
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("PriorPTSG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
+                serializationformatter.Serialize(serializationstream, pTSGprior);
+                serializationstream.Close();
+                // Finish Serialize PriorPTSG 
+                Console.WriteLine("Finish calculate PriorPTSG");
+            }
+            else
+            {
+                Console.WriteLine("Start read PriorPTSG from PriorPTSG.bin, Press Enter to continue.");
+                Console.ReadLine(); //Pause
+                serializationformatter = new BinaryFormatter();
+                serializationstream = new FileStream("PriorPTSG.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
+                pTSGprior = (PriorPTSG)serializationformatter.Deserialize(serializationstream);
+                serializationstream.Close();
+                Console.WriteLine("Finish read PriorPTSG.");
+            }
             // ############### Finish calculate PriorPTSG ##################
 
 
