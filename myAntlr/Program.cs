@@ -44,7 +44,7 @@ namespace myAntlr
 
             int currentfile = 0;
 
-            int useAntlr = 0;
+            int useAntlr = 1;
 
             if (useAntlr == 1)
             {
@@ -91,7 +91,8 @@ namespace myAntlr
                 funcvisitor.countContextFreeGrammar();
                 //funcvisitor.printGrammar();
                 pCFG = funcvisitor.getPCFG();
-                pCFG.printGrammar();
+                // pCFG.printGrammar();
+
                 // Start Serialize PCFG
                 serializationformatter = new BinaryFormatter();
                 serializationstream = new FileStream("PCFG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
@@ -130,6 +131,7 @@ namespace myAntlr
                 serializationstream.Close();
                 Console.WriteLine("Finish read SourceASTs.");
             }
+            pCFG.outputPCFG("PCFG.txt");
             // ############### Finish calculate & SourceASTs ###############
 
             // ############### Start calculate PriorPTSG ###################
@@ -141,7 +143,8 @@ namespace myAntlr
                 Console.ReadLine(); //Pause
                 pTSGprior = new PriorPTSG(pCFG);
                 pTSGprior.generatePTSG();
-                pTSGprior.outputPTSG();
+                //pTSGprior.outputPTSG();
+
                 // Start Serialize PriorPTSG
                 serializationformatter = new BinaryFormatter();
                 serializationstream = new FileStream("PriorPTSG.bin", FileMode.Create, FileAccess.Write, FileShare.None);
@@ -160,6 +163,7 @@ namespace myAntlr
                 serializationstream.Close();
                 Console.WriteLine("Finish read PriorPTSG.");
             }
+            pTSGprior.outputPTSG("PriorPTSG.txt");
             // ############### Finish calculate PriorPTSG ##################
 
 
@@ -171,7 +175,7 @@ namespace myAntlr
             Console.ReadLine(); //Pause
             PostPTSG postPTSG = new PostPTSG(sourceASTs, pTSGprior);
             postPTSG.calculatePostPTSG();
-            postPTSG.getPostPTSG();
+            postPTSG.outputpostPTSG("PostPTSG.txt");
             Console.WriteLine("Finish calculate PostPTSG");
 
             stw.Stop();

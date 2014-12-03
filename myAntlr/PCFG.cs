@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using myAntlr.misc;
 
@@ -102,17 +103,22 @@ namespace myAntlr
             }
             return false;
         }
-        public void printGrammar()
+        public void outputPCFG(string path)
         {
+            StreamWriter sw = new StreamWriter(path);
             foreach (KeyValuePair<List<string>, int> grammarcount in pCFGlist.OrderBy(i => i.Value))
             {
                 for (int i = 0; i < grammarcount.Key.Count; i++)
                 {
                     Console.Write(grammarcount.Key[i] + " ");
+                    sw.Write(grammarcount.Key[i] + " ");
                 }
                 Console.WriteLine("\nFrequency: " + grammarcount.Value + "\n----------");
+                sw.WriteLine("\nFrequency: " + grammarcount.Value + "\n----------");
             }
             Console.WriteLine("Total grammar: " + pCFGlist.Count());
+            sw.WriteLine("Total grammar: " + pCFGlist.Count());
+            sw.Close();
         }
 
     }

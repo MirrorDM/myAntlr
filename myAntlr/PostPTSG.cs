@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace myAntlr
 {
@@ -10,6 +11,7 @@ namespace myAntlr
     {
         Dictionary<string, int> TSGcount = new Dictionary<string, int>();
         Dictionary<string, int> rootcount = new Dictionary<string, int>();
+        Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
         Dictionary<string, double> p0;
         double alpha;
         SourceASTs asts;
@@ -33,12 +35,12 @@ namespace myAntlr
 
                 calculateOneTSG();
             }
+
+            getPostPTSG();
         }
 
         public Dictionary<string, double> getPostPTSG()
         {
-            Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
-
             foreach (string seq in TSGcount.Keys)
             {
                 double postP = postProbablity(seq);
@@ -46,14 +48,28 @@ namespace myAntlr
                 finalpTSG.Add(seq, postP);
             }
 
-            foreach (var item in finalpTSG.OrderBy(i => i.Value))
-            {
-                Console.WriteLine(item.Key + item.Value);
-            }
+            //foreach (var item in finalpTSG.OrderBy(i => i.Value))
+            //{
+            //    Console.WriteLine(item.Key + item.Value);
+            //}
 
-            Console.WriteLine("pTSG count" + finalpTSG.Count());
+            //Console.WriteLine("pTSG count" + finalpTSG.Count());
 
             return finalpTSG;
+        }
+
+        public void outputpostPTSG(string path)
+        {
+            StreamWriter sw = new StreamWriter(path);
+            foreach (var item in finalpTSG.OrderBy(i => i.Value))
+            {
+                sw.WriteLine(item.Key + item.Value);
+                Console.WriteLine(item.Key + item.Value);
+            }
+            sw.WriteLine("PostTSG count" + finalpTSG.Count());
+            Console.WriteLine("PostTSG count" + finalpTSG.Count());
+            sw.Close();
+            
         }
         static string getStringRoot(string s)
         {

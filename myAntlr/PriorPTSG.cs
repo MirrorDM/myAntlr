@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 using myAntlr.misc;
 
@@ -14,7 +15,7 @@ namespace myAntlr
         Dictionary<string, double> priorPTSG = new Dictionary<string, double>();
         PCFG pCFG;
         HashSet<string> nonTerminal;
-        double expandrate = 0.9; // p$, for each nonternimal node, probability to expand.
+        double expandrate = 0.7; // p$, for each nonternimal node, probability to expand.
         int totalsample = 1000; // how many times for Dirichlet process.
         
         double alpha = 0.01; // Beta(1, alpha) distribution.
@@ -53,7 +54,7 @@ namespace myAntlr
         {
             for (int i = 0; i < totalsample; i++)
             {
-                TSG t = buildTSG(root);
+                TSG t = buildTSG(root, 1);
                 string seq = t.getSequence();
                 if (priorPTSG.ContainsKey(seq))
                 {
@@ -67,6 +68,7 @@ namespace myAntlr
         }
         public void calculateDPparameters()
         {
+            /*
             for (int i = 0; i < totalsample; i++)
             {
                 u[i] = SimpleRNG.GetBeta(1, alpha);
@@ -81,23 +83,36 @@ namespace myAntlr
                 // Second pi_i = (1-u_i) * u_(i-1) * ... * u_1
                 pi[i] = pi[i] * (1 - u[i]);
             }
-        }
-        public void outputPTSG()
-        {
-            foreach (string seq in priorPTSG.Keys)
+            */
+            for (int i = 0; i < totalsample; i++)
             {
-                if (priorPTSG[seq] > 0.1)
-                    Console.WriteLine(seq + ": " + priorPTSG[seq]);
+                pi[i] = (double)1 / totalsample;
             }
         }
-        TSG buildTSG(string root)
+        public void outputPTSG(string path)
+        {
+            StreamWriter sw = new StreamWriter(path);
+            // foreach (var item in finalpTSG.OrderBy(i => i.Value))
+            foreach (var item in priorPTSG.OrderBy(i => i.Value))
+            {
+                sw.WriteLine(item.Key + ": " + item.Value);
+                Console.WriteLine(item.Key + ": " + item.Value);
+            }
+            sw.WriteLine("PriorTSG count" + priorPTSG.Count());
+            Console.WriteLine("PriorTSG count" + priorPTSG.Count());
+            sw.Close();
+        }
+
+        // mustexpand = 1 for outer call, mustexpand = 0 for recursive.
+        // avoid single node.
+        TSG buildTSG(string root, int mustexpand)
         {
             TSG currentNode = new TSG();
             currentNode.setName(root);
             List<TSG> tmpList = new List<TSG>();
 
             // expand rate.
-            if (rand.NextDouble() < expandrate)
+            if (rand.NextDouble() < expandrate || mustexpand == 1)
             {
                 List<string> expand = pCFG.getOneCFGfromRootRandomly(root);
                 if (expand != null && expand.Count() > 1)
@@ -109,7 +124,7 @@ namespace myAntlr
                     for (int i = 1; i < expand.Count(); i++)
                     {
                         childName = expand[i];
-                        child = buildTSG(childName);
+                        child = buildTSG(childName, 0);
                         //currentNode.addChild(child);
                         tmpList.Add(child);
                     }
