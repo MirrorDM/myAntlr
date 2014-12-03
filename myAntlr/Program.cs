@@ -135,7 +135,7 @@ namespace myAntlr
             // ############### Finish calculate & SourceASTs ###############
 
             // ############### Start calculate PriorPTSG ###################
-            int calculatePriorPTSG = 0;
+            int calculatePriorPTSG = 1;
             PriorPTSG pTSGprior;
             if (calculatePriorPTSG == 1 || useAntlr == 1)
             {

@@ -61,6 +61,9 @@ namespace myAntlr
         public void outputpostPTSG(string path)
         {
             StreamWriter sw = new StreamWriter(path);
+            sw.WriteLine("getTSGtimes: " + getTSGtimes);
+            sw.WriteLine("iterationOfEachTSG" + iterationOfEachTSG);
+
             foreach (var item in finalpTSG.OrderBy(i => i.Value))
             {
                 sw.WriteLine(item.Key + item.Value);
