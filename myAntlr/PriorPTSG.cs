@@ -17,7 +17,7 @@ namespace myAntlr
         HashSet<string> nonTerminal;
         double expandrate = 0.7; // p$, for each nonternimal node, probability to expand.
         int totalsample = 1000; // how many times for Dirichlet process.
-        
+        int useDP = 0;       // Dirichlet Process or Maximum Likelihood
         double alpha = 0.01; // Beta(1, alpha) distribution.
         
         double[] u;  // array of random number, u_i ~ Beta(1, alpha).
@@ -68,30 +68,47 @@ namespace myAntlr
         }
         public void calculateDPparameters()
         {
-            /*
-            for (int i = 0; i < totalsample; i++)
+            // Dirichlet Process
+            if (useDP == 1)
             {
-                u[i] = SimpleRNG.GetBeta(1, alpha);
-                // First pi_i = u_(i-1) * ... * u_1
-                if (i == 0)
-                    pi[i] = 1;
-                else
-                    pi[i] = pi[i - 1] * u[i - 1];
+                for (int i = 0; i < totalsample; i++)
+                {
+                    u[i] = SimpleRNG.GetBeta(1, alpha);
+                    // First pi_i = u_(i-1) * ... * u_1
+                    if (i == 0)
+                        pi[i] = 1;
+                    else
+                        pi[i] = pi[i - 1] * u[i - 1];
+                }
+                for (int i = 0; i < totalsample; i++)
+                {
+                    // Second pi_i = (1-u_i) * u_(i-1) * ... * u_1
+                    pi[i] = pi[i] * (1 - u[i]);
+                }
             }
-            for (int i = 0; i < totalsample; i++)
+            // Maximum Likelihood
+            else
             {
-                // Second pi_i = (1-u_i) * u_(i-1) * ... * u_1
-                pi[i] = pi[i] * (1 - u[i]);
-            }
-            */
-            for (int i = 0; i < totalsample; i++)
-            {
-                pi[i] = (double)1 / totalsample;
+                for (int i = 0; i < totalsample; i++)
+                {
+                    pi[i] = (double)1 / totalsample;
+                }
             }
         }
         public void outputPTSG(string path)
         {
             StreamWriter sw = new StreamWriter(path);
+            sw.WriteLine("expandrate: " + expandrate);
+            sw.WriteLine("totalsample: " + totalsample);
+            sw.WriteLine("alpha: " + alpha);
+            if (useDP == 1)
+            {
+                sw.WriteLine("Dirichlet Process");
+            }
+            else
+            {
+                sw.WriteLine("Maximum Likelihood");
+            }
             // foreach (var item in finalpTSG.OrderBy(i => i.Value))
             foreach (var item in priorPTSG.OrderBy(i => i.Value))
             {
