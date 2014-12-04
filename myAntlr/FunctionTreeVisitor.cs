@@ -115,7 +115,7 @@ namespace myAntlr
             }
 
             // TODO: Should filter this?
-            if (grammar.Count < 3)
+            if (grammar.Count < 2)
             {
                 return;
             }
