@@ -20,17 +20,100 @@ namespace myAntlr
         public ModuleParser.Function_param_listContext paramlist;
         public FunctionParser.StatementsContext functionstatements;
 
-        public void binarization()
+        public void editAST()
+        {
+            Console.WriteLine("Processing structureblock");
+            structureblock();
+            Console.WriteLine("Processing compresschain");
+            compresschain();
+            Console.WriteLine("Processing removeStatementContext");
+            removeStatementContext();//must after compresschain. delete statementcontext.
+            Console.WriteLine("Processing removeTerminalNodeImpl");
+            removeTerminalNodeImpl();
+            Console.WriteLine("Processing binarization");
+            binarization();
+        }
+        void binarization()
         {
             binarizeParserRuleContext(functionstatements);
         }
-        public void compresschain()
+        // before: A->B->C->D 
+        // after:  A->D
+        void compresschain()
         {
             checkIsChainFirstNode(functionstatements);
         }
-        public void structureblock()
+        void structureblock()
         {
             isBlockStarter(functionstatements);
+        }
+
+        // StatementContext has only one child.
+        void removeStatementContext()
+        {
+            isStatementContext(functionstatements);
+        }
+        void removeTerminalNodeImpl()
+        {
+            isChildTerminalNodeImpl(functionstatements);
+        }
+        void isStatementContext(ParserRuleContext node)
+        {
+            if (node is FunctionParser.StatementContext)
+            {
+                ParserRuleContext father = (ParserRuleContext)node.parent;
+                int index = father.children.IndexOf(node);
+                if (node.children.ElementAt(0) is TerminalNodeImpl)
+                {
+                    TerminalNodeImpl terminalnode = (TerminalNodeImpl)node.children.ElementAt(0);
+                    terminalnode.parent = father;
+                    father.children.RemoveAt(index);
+                    father.children.Insert(index, terminalnode);
+                }
+                else
+                {
+                    ParserRuleContext child = (ParserRuleContext)node.children.ElementAt(0);
+                    child.parent = father;
+                    father.children.RemoveAt(index);
+                    father.children.Insert(index, child);
+                }
+            }
+            
+            if (node.children != null)
+            {
+                for (int i = 0; i < node.children.Count(); i++)
+                {
+                    if (node.children.ElementAt(i) is ParserRuleContext)
+                    {
+                        isStatementContext((ParserRuleContext)node.children.ElementAt(i));
+                    }
+                }
+            }
+        }
+        void isChildTerminalNodeImpl(ParserRuleContext node)
+        {
+            List<IParseTree> removelist = new List<IParseTree>();
+            if (node.children != null)
+            {
+                for (int i = 0; i < node.children.Count(); i++)
+                {
+                    if (node.children.ElementAt(i) is TerminalNodeImpl)
+                    {
+                        removelist.Add(node.children.ElementAt(i));
+                    }
+                }
+                foreach (IParseTree ipt in removelist)
+                {
+                    node.children.Remove(ipt);
+                }
+                for (int i = 0; i < node.children.Count(); i++)
+                {
+                    if (node.children.ElementAt(i) is ParserRuleContext)
+                    {
+                        isChildTerminalNodeImpl((ParserRuleContext)node.children.ElementAt(i));
+                    }
+                }
+            }
         }
         void isBlockStarter(ParserRuleContext node)
         {
@@ -43,7 +126,7 @@ namespace myAntlr
 
             if (node is FunctionParser.Block_starterContext)
             {
-                Console.WriteLine("is block starter: " + node.GetType().ToString());
+                //Console.WriteLine("is block starter: " + node.GetType().ToString());
                 ParserRuleContext stmt, stmts;
                 if (node.parent != null)
                 {

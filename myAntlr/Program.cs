@@ -66,10 +66,10 @@ namespace myAntlr
                 Console.WriteLine("Start binarization && compress chain");
                 foreach (FunctionNode fnode in functionlist)
                 {
-                    fnode.structureblock();
-                    fnode.compresschain();
-                    fnode.binarization();
-                    //fnode.outputdot();
+                    fnode.editAST();
+                    //fnode.structureblock();
+                    //fnode.compresschain();
+                    //fnode.binarization();
                 }
                 Console.WriteLine("Finish binarization && compress chain");
 
