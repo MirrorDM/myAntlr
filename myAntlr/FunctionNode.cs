@@ -22,15 +22,15 @@ namespace myAntlr
 
         public void editAST()
         {
-            Console.WriteLine("Processing structureblock");
+            //Console.WriteLine("Processing structureblock");
             structureblock();
-            Console.WriteLine("Processing compresschain");
+            //Console.WriteLine("Processing compresschain");
             compresschain();
-            Console.WriteLine("Processing removeStatementContext");
+            //Console.WriteLine("Processing removeStatementContext");
             removeStatementContext();//must after compresschain. delete statementcontext.
-            Console.WriteLine("Processing removeTerminalNodeImpl");
+            //Console.WriteLine("Processing removeTerminalNodeImpl");
             removeTerminalNodeImpl();
-            Console.WriteLine("Processing binarization");
+            //Console.WriteLine("Processing binarization");
             binarization();
         }
         void binarization()

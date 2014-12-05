@@ -64,9 +64,13 @@ namespace myAntlr
 
                 // binarization && compress chain
                 Console.WriteLine("Start binarization && compress chain");
+                int countfunction = functionlist.Count();
+                int curfunction = 0;
                 foreach (FunctionNode fnode in functionlist)
                 {
                     fnode.editAST();
+                    Console.WriteLine("Processing: " + curfunction + " / " + countfunction);
+                    curfunction++;
                     //fnode.structureblock();
                     //fnode.compresschain();
                     //fnode.binarization();

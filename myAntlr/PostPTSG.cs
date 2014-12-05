@@ -62,7 +62,7 @@ namespace myAntlr
         {
             StreamWriter sw = new StreamWriter(path);
             sw.WriteLine("getTSGtimes: " + getTSGtimes);
-            sw.WriteLine("iterationOfEachTSG" + iterationOfEachTSG);
+            sw.WriteLine("iterationOfEachTSG: " + iterationOfEachTSG);
 
             foreach (var item in finalpTSG.OrderBy(i => i.Value))
             {
@@ -139,21 +139,33 @@ namespace myAntlr
                 if (random01 <= z0rate)
                 {
                     cur.setIsNewFragment(0);
-                    // update join
-                    updateTSGcount(fragmentroot);
-                    updateRootcount(fragmentroot.getName());
+                    // Ignore single node.
+                    if (fragmentroot.getSize() > 1)
+                    {
+                        // update join
+                        updateTSGcount(fragmentroot);
+                        updateRootcount(fragmentroot.getName());
+                    }
                 }
 
                 // isNewFragment = 1.
                 else
                 {
                     cur.setIsNewFragment(1);
-                    // update t
-                    updateTSGcount(fragmentroot);
-                    updateRootcount(fragmentroot.getName());
-                    // update s
-                    updateTSGcount(cur);
-                    updateRootcount(cur.getName());
+                    // Ignore single node.
+                    if (fragmentroot.getSize() > 1)
+                    {
+                        // update t
+                        updateTSGcount(fragmentroot);
+                        updateRootcount(fragmentroot.getName());
+                    }
+                    // Ignore single node.
+                    if (cur.getSize() > 1)
+                    {
+                        // update s
+                        updateTSGcount(cur);
+                        updateRootcount(cur.getName());
+                    }
                 }
             }
         }

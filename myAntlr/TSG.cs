@@ -94,6 +94,18 @@ namespace myAntlr
             s = s + ")";
             return s;
         }
+        public int getSize()
+        {
+            int size = 1;
+            if (isNewFragment == 0)
+            {
+                foreach (TSG child in children)
+                {
+                    size = size + child.getSize();
+                }
+            }
+            return size;
+        }
         public override bool Equals(object obj)
         {
             if (obj is TSG)
