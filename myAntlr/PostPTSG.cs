@@ -13,7 +13,7 @@ namespace myAntlr
         Dictionary<string, int> rootcount = new Dictionary<string, int>();
         Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
         Dictionary<string, double> p0;
-        double alpha;
+        double alpha = 5;
         SourceASTs asts;
         Random rand = new Random();
 
@@ -24,7 +24,8 @@ namespace myAntlr
         {
             asts = sourceasts;
             p0 = prior.getPrior();
-            alpha = prior.getalpha();
+            //No need to be the same alpha.
+            //alpha = prior.getalpha();
         }
 
         public void calculatePostPTSG()

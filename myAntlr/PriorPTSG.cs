@@ -17,8 +17,8 @@ namespace myAntlr
         HashSet<string> nonTerminal;
         double expandrate = 0.7; // p$, for each nonternimal node, probability to expand.
         int totalsample = 1000; // how many times for Dirichlet process.
-        int useDP = 0;       // Dirichlet Process or Maximum Likelihood
-        double alpha = 0.01; // Beta(1, alpha) distribution.
+        int useDP = 1;       // Dirichlet Process or Maximum Likelihood
+        double alpha = 1000; // Beta(alpha, 1) distribution.
         
         double[] u;  // array of random number, u_i ~ Beta(1, alpha).
         double[] pi; // pi_k = (1 - u_k) * u_(k-1) * u_(k-2) * ... * u_1
@@ -73,7 +73,7 @@ namespace myAntlr
             {
                 for (int i = 0; i < totalsample; i++)
                 {
-                    u[i] = SimpleRNG.GetBeta(1, alpha);
+                    u[i] = SimpleRNG.GetBeta(alpha, 1);
                     // First pi_i = u_(i-1) * ... * u_1
                     if (i == 0)
                         pi[i] = 1;
