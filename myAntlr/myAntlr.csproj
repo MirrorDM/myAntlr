@@ -171,9 +171,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PriorPTSG.cs" />
     <Compile Include="SourceASTs.cs" />
+    <Compile Include="SrcTSGVisitor.cs" />
     <Compile Include="tests\cfgCreation\CFGCreatorTest.cs" />
     <Compile Include="tests\parseTreeToAST\FunctionContentTestUtil.cs" />
     <Compile Include="TSG.cs" />
+    <Compile Include="XML2TSG.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -13,7 +13,86 @@ namespace myAntlr
         string name;
         int isNewFragment = 0;
         TSG father = null;
+        int id = 0;
+        string code = "";
+        bool isCFGNode = false;
+
         List<TSG> children = new List<TSG>();
+
+        public void editTSG()
+        {
+            compresschain();
+            binarization();
+        }
+        void compresschain()
+        {
+            checkIsChainFirstNode(this);
+        }
+        void checkIsChainFirstNode(TSG node)
+        {
+            if (node.getChildCount() == 1)
+            {
+                TSG lastnode = getChainLastNode(node);
+                lastnode.setFather(node);
+                List<TSG> newchildlist = new List<TSG>();
+                newchildlist.Add(lastnode);
+                node.setChildrenAndSetFather(newchildlist);
+            }
+            for (int i = 0; i < node.getChildCount(); i++)
+            {
+                checkIsChainFirstNode(node.getChild(i));
+            }
+        }
+        TSG getChainLastNode(TSG node)
+        {
+            if (node.getChildCount() == 1)
+            {
+                return getChainLastNode(node.getChild(0));
+            }
+            return node;
+        }
+
+        void binarization()
+        {
+            binarizeNode(this);
+        }
+        void binarizeNode(TSG root)
+        {
+            if (root.getChildCount() > 2)
+            {
+                List<TSG> childlist = root.getChildren();
+                List<TSG> newlist = new List<TSG>();
+                newlist.Add(childlist[0]);
+                TSG dummytreenode = new TSG();
+                dummytreenode.setName("DummyTreeNode");
+                childlist.RemoveAt(0);
+                foreach (TSG t in childlist)
+                {
+                    dummytreenode.addChild(t);
+                    t.setFather(dummytreenode);
+                }
+                newlist.Add(dummytreenode);
+                root.setChildrenAndSetFather(newlist);
+            }
+            for (int i = 0; i < root.getChildCount(); i++)
+            {
+                binarizeNode(root.getChild(i));
+            }
+        }
+        public TSG getChild(int i)
+        {
+            if (i >= children.Count)
+                return null;
+            return children[i];
+        }
+        public int getChildCount()
+        {
+            return children.Count;
+        }
+        public void addChild(TSG c)
+        {
+            children.Add(c);
+        }
 
         public void setFather(TSG f)
         {
@@ -32,6 +111,31 @@ namespace myAntlr
                     return this;
                 cur = cur.getFather();
             }
+        }
+        public void setisCFGNode(bool bl)
+        {
+            isCFGNode = bl;
+        }
+        public bool getisCFGNode()
+        {
+            return isCFGNode;
+        }
+
+        public void setCode(string s)
+        {
+            code = s;
+        }
+        public string getCode()
+        {
+            return code;
+        }
+        public void setID(int i)
+        {
+            id = i;
+        }
+        public int getID()
+        {
+            return id;
         }
         public int getIsNewFragment()
         {

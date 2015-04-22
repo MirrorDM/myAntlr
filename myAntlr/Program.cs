@@ -27,7 +27,71 @@ namespace myAntlr
 
         static void Main(string[] args)
         {
+            //getASTfromSrc();
+            getASTfromXML();
+        }
+        static void getASTfromXML()
+        {
+            string directory = "D:\\work\\4ast\\simplexml";
+            DirectoryInfo di = new DirectoryInfo(directory);
+            FileInfo[] files = di.GetFiles("*.xml");
+            List<string> allfiles = new List<string>();
+            foreach (FileInfo f in files)
+            {
+                allfiles.Add(f.FullName);
+            }
 
+            List<TSG> srcTSG = new List<TSG>();
+            for (int i = 0; i < allfiles.Count; i++)
+            {
+                XML2TSG x = new XML2TSG(allfiles[i]);
+                TSG t = x.getTSG();
+                srcTSG.Add(t);
+                Console.Write("Calculate TSG from XML: " + (i + 1) + " / " + allfiles.Count + '\r');
+            }
+            Console.WriteLine();
+            Console.WriteLine(srcTSG.Count);
+
+            Console.ReadLine(); //Pause
+
+            //compresschain & binarization
+            foreach (TSG t in srcTSG)
+            {
+                t.editTSG();
+            }
+
+            SrcTSGVisitor TSGvisitor = new SrcTSGVisitor(srcTSG);
+
+
+            PCFG pCFG;
+            SourceASTs sourceASTs;
+
+            TSGvisitor.countContextFreeGrammar();
+            pCFG = TSGvisitor.getPCFG();
+            pCFG.outputPCFG("PCFG.txt");
+            Console.WriteLine("Finish calculate PCFG.");
+            sourceASTs = new SourceASTs(srcTSG);
+            sourceASTs.outputXML();
+            Console.WriteLine("Finish calculate sourceASTs.");
+            Console.ReadLine(); //Pause
+
+            PriorPTSG pTSGprior;
+            pTSGprior = new PriorPTSG(pCFG);
+            pTSGprior.generatePTSG();
+            pTSGprior.outputPTSG("PriorPTSG.txt");
+            Console.WriteLine("Finish calculate PriorPTSG.");
+            Console.ReadLine(); //Pause
+
+            PostPTSG postPTSG;
+            postPTSG = new PostPTSG(sourceASTs, pTSGprior);
+            postPTSG.calculatePostPTSG();
+            postPTSG.outputpostPTSG("PostPTSG.txt");
+            postPTSG.outputXML();
+            Console.WriteLine("Finish calculate PostPTSG.");
+
+        }
+        static void getASTfromSrc()
+        {
             IFormatter serializationformatter;
             Stream serializationstream;
 
@@ -73,6 +137,8 @@ namespace myAntlr
                     fnode.editAST();
                     Console.WriteLine("Processing: " + curfunction + " / " + countfunction);
                     curfunction++;
+
+                    //The below process is done in editAST().
                     //fnode.structureblock();
                     //fnode.compresschain();
                     //fnode.binarization();
@@ -83,7 +149,7 @@ namespace myAntlr
                 //Thread.Sleep(1000);
             }
 
-            
+
             // ############### Start calculate PCFG & SourceASTs ################
             PCFG pCFG;
             SourceASTs sourceASTs;
@@ -188,6 +254,7 @@ namespace myAntlr
 
             stw.Stop();
         }
+        
 
     }
 

@@ -18,6 +18,10 @@ namespace myAntlr
         {
             TSGList = fv.getAllTSG();
         }
+        public SourceASTs(List<TSG> ltsg)
+        {
+            TSGList = ltsg;
+        }
 
         public TSG getOneTSGRandomly()
         {
