@@ -19,6 +19,7 @@ namespace myAntlr
 
         const int getTSGtimes = 100000;
         const int iterationOfEachTSG = 1;
+        const int ignoreThreshold = 4;
 
         public PostPTSG(SourceASTs sourceasts, PriorPTSG prior)
         {
@@ -212,8 +213,8 @@ namespace myAntlr
                 if (random01 <= z0rate)
                 {
                     cur.setIsNewFragment(0);
-                    // Ignore single node.
-                    if (fragmentroot.getSize() > 1)
+                    // Ignore single node. Ignore small TSG.
+                    if (fragmentroot.getSize() > ignoreThreshold)
                     {
                         // update join
                         updateTSGcount(fragmentroot);
@@ -225,15 +226,15 @@ namespace myAntlr
                 else
                 {
                     cur.setIsNewFragment(1);
-                    // Ignore single node.
-                    if (fragmentroot.getSize() > 1)
+                    // Ignore single node. Ignore small TSG.
+                    if (fragmentroot.getSize() > ignoreThreshold)
                     {
                         // update t
                         updateTSGcount(fragmentroot);
                         updateRootcount(fragmentroot.getName());
                     }
-                    // Ignore single node.
-                    if (cur.getSize() > 1)
+                    // Ignore single node. Ignore small TSG.
+                    if (cur.getSize() > ignoreThreshold)
                     {
                         // update s
                         updateTSGcount(cur);
