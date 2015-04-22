@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace myAntlr
 {
@@ -118,6 +119,24 @@ namespace myAntlr
         {
             string s = getSequence();
             return s.GetHashCode();
+        }
+        public string outputXML()
+        {
+            string s = "";
+            if (children.Count() == 0)
+            {
+                s = s + "<" + name + ">" + "</" + name + ">" + "\n";
+            }
+            else
+            {
+                s = s + "<" + name + ">" + "\n";
+                foreach (TSG child in children)
+                {
+                    s = s + child.outputXML();
+                }
+                s = s + "</" + name + ">" + "\n";
+            }
+            return s;
         }
     }
 }

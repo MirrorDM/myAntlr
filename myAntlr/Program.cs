@@ -27,6 +27,7 @@ namespace myAntlr
 
         static void Main(string[] args)
         {
+
             IFormatter serializationformatter;
             Stream serializationstream;
 
@@ -35,7 +36,8 @@ namespace myAntlr
             stw.Start();
 
             // string pt = "C:\\Users\\v-dazou\\Documents\\linux-3.16.1\\sound";
-            string pt = "C:\\Users\\v-dazou\\Documents\\sound";
+            // string pt = "C:\\Users\\v-dazou\\Documents\\sound";
+            string pt = "D:\\work\\linux-3.18.10\\security";
             DirectoryWalker walker = new DirectoryWalker(pt);
             // for test.
             walker.setMaxDepth(1);
@@ -135,6 +137,7 @@ namespace myAntlr
                 serializationstream.Close();
                 Console.WriteLine("Finish read SourceASTs.");
             }
+            sourceASTs.outputXML();
             pCFG.outputPCFG("PCFG.txt");
             // ############### Finish calculate & SourceASTs ###############
 
@@ -143,7 +146,7 @@ namespace myAntlr
             PriorPTSG pTSGprior;
             if (calculatePriorPTSG == 1 || useAntlr == 1)
             {
-                Console.WriteLine("Start calculate PriorPTSG");
+                Console.WriteLine("Start calculate PriorPTSG, Press Enter to continue.");
                 Console.ReadLine(); //Pause
                 pTSGprior = new PriorPTSG(pCFG);
                 pTSGprior.generatePTSG();
@@ -175,11 +178,12 @@ namespace myAntlr
             //TSG tmp = funcvisitor.getOneTSGRandomly();
             //Console.WriteLine(tmp.getSequence());
 
-            Console.WriteLine("Start calculate PostPTSG");
+            Console.WriteLine("Start calculate PostPTSG, Press Enter to continue.");
             Console.ReadLine(); //Pause
             PostPTSG postPTSG = new PostPTSG(sourceASTs, pTSGprior);
             postPTSG.calculatePostPTSG();
             postPTSG.outputpostPTSG("PostPTSG.txt");
+            postPTSG.outputXML();
             Console.WriteLine("Finish calculate PostPTSG");
 
             stw.Stop();

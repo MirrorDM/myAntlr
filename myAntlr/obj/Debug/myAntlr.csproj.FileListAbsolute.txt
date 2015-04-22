@@ -19,3 +19,24 @@ C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.exe
 C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\myAntlr.pdb
+D:\work\myAntlr\myAntlr\bin\Debug\myAntlr.exe.config
+D:\work\myAntlr\myAntlr\obj\Debug\myAntlr.exe
+D:\work\myAntlr\myAntlr\obj\Debug\myAntlr.pdb
+D:\work\myAntlr\myAntlr\bin\Debug\myAntlr.exe
+D:\work\myAntlr\myAntlr\bin\Debug\myAntlr.pdb
+D:\work\myAntlr\myAntlr\bin\Debug\Antlr4.Runtime.v4.5.dll
+D:\work\myAntlr\myAntlr\bin\Debug\Antlr4.Runtime.v4.5.xml
+D:\work\myAntlr\myAntlr\obj\Debug\myAntlr.csprojResolveAssemblyReference.cache
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionLexer.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionParser.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionBaseListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionBaseVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleLexer.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleParser.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleBaseListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleBaseVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\myAntlr.csproj.Antlr4GeneratedCodeFileListAbsolute.txt

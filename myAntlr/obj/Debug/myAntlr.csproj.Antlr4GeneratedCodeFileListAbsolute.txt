@@ -1,12 +1,12 @@
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionLexer.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionParser.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionListener.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionBaseListener.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionVisitor.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\FunctionBaseVisitor.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleLexer.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleParser.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleListener.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleBaseListener.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleVisitor.cs
-C:\Users\v-dazou\documents\visual studio 2012\Projects\MyAntlr\myAntlr\obj\Debug\ModuleBaseVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionLexer.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionParser.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionBaseListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\FunctionBaseVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleLexer.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleParser.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleBaseListener.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleVisitor.cs
+D:\work\myAntlr\myAntlr\obj\Debug\ModuleBaseVisitor.cs

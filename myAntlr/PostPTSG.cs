@@ -75,6 +75,78 @@ namespace myAntlr
             sw.Close();
             
         }
+        public void outputXML()
+        {
+            StreamWriter prob = new StreamWriter("idioms\\prob.txt");
+            int n = 0;
+            foreach (var item in finalpTSG.OrderBy(i => i.Value))
+            {
+                String path = "idioms\\" + n.ToString() + ".xml";
+                TSG t = getTSGfromSequence(item.Key);
+                StreamWriter sw = new StreamWriter(path);
+                string stringxml = t.outputXML();
+                sw.WriteLine(stringxml);
+                sw.Close();
+                prob.WriteLine(n + ", " + item.Value);
+                n++;
+            }
+            prob.Close();
+        }
+
+        public static TSG getTSGfromSequence(string sequence)
+        {
+            TSG r = new TSG();
+            List<TSG> chld = new List<TSG>();
+            int len = sequence.Length;
+
+            //sequence for example:
+            //(DummyTreeNode(ConditionContext)(ExprContext(Assign_exprContext)))
+            int subtreestart = 1;
+            for (; subtreestart < len; subtreestart++)
+            {
+                if (sequence[subtreestart] == '(' || sequence[subtreestart] == ')')
+                {
+                    string name = sequence.Substring(1, subtreestart - 1);
+                    r.setName(name);
+                    break;
+                }
+            }
+            if (subtreestart == len)
+                return r;
+
+            int i = subtreestart;
+            while (i < len)
+            {
+                if (sequence[i] == '(')
+                {
+                    int countquote = 1;
+                    int k = i + 1;
+                    for (; k < len; k++)
+                    {
+                        if (sequence[k] == '(')
+                            countquote++;
+                        else if (sequence[k] == ')')
+                            countquote--;
+                        if (countquote == 0)
+                        {
+                            string subsequence = sequence.Substring(i, k - i + 1);
+                            TSG c = getTSGfromSequence(subsequence);
+                            chld.Add(c);
+                            break;
+                        }
+                    }
+                    i = k + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            r.setChildrenAndSetFather(chld);
+            return r;
+        }
+
+
         static string getStringRoot(string s)
         {
             int len = s.Length;
