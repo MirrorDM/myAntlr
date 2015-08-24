@@ -15,13 +15,18 @@ namespace myAntlr
         Dictionary<string, double> priorPTSG = new Dictionary<string, double>();
         PCFG pCFG;
         HashSet<string> nonTerminal;
-        double expandrate = 0.7; // p$, for each nonternimal node, probability to expand.
+        double expandrate = 0.9; // p$, for each nonternimal node, probability to expand.
         int totalsample = 1000; // how many times for Dirichlet process.
         int useDP = 1;       // Dirichlet Process or Maximum Likelihood
         double alpha = 1000; // Beta(alpha, 1) distribution.
         
         double[] u;  // array of random number, u_i ~ Beta(1, alpha).
         double[] pi; // pi_k = (1 - u_k) * u_(k-1) * u_(k-2) * ... * u_1
+
+        int totalsize = 0; //the sum of all tree nodes.
+        double averagesize = 0; // the average size of all trees.
+
+
         Random rand = new Random();
 
         public PriorPTSG(PCFG cfg)
@@ -45,10 +50,13 @@ namespace myAntlr
             int i = 0, nonterminalCount = nonTerminal.Count();
             foreach (string s in nonTerminal)
             {
-                Console.WriteLine("Dirichlet Process for node: " + s + ", " + (i++) + " / " + nonterminalCount);
                 calculateDPparameters();
                 generatePTSG(s);
+                averagesize = totalsize / (double)totalsample;
+                Console.WriteLine("Average size of root " + s + ": " + averagesize + ", " + (i++) + " / " + nonterminalCount);
+                totalsize = 0;
             }
+
         }
         public void generatePTSG(string root)
         {
@@ -64,6 +72,7 @@ namespace myAntlr
                 {
                     priorPTSG.Add(seq, pi[i]);
                 }
+                totalsize += t.getSize();
             }
         }
         public void calculateDPparameters()
@@ -113,10 +122,10 @@ namespace myAntlr
             foreach (var item in priorPTSG.OrderBy(i => i.Value))
             {
                 sw.WriteLine(item.Key + ": " + item.Value);
-                Console.WriteLine(item.Key + ": " + item.Value);
+                //Console.WriteLine(item.Key + ": " + item.Value);
             }
             sw.WriteLine("PriorTSG count" + priorPTSG.Count());
-            Console.WriteLine("PriorTSG count" + priorPTSG.Count());
+            //Console.WriteLine("PriorTSG count" + priorPTSG.Count());
             sw.Close();
         }
 

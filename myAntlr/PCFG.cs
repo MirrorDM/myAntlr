@@ -50,6 +50,9 @@ namespace myAntlr
             Dictionary<List<string>, double> CFGwithProb = getCFGfromRoot(s);
             double p = randObj.NextDouble();
             double tmpsum = 0;
+            //For debug-b
+            //return CFGwithProb.First().Key;
+            //For debug-e
             foreach (List<string> cfg in CFGwithProb.Keys)
             {
                 tmpsum += CFGwithProb[cfg];
@@ -62,6 +65,8 @@ namespace myAntlr
             Console.Error.WriteLine("PCFG.getOneCFGfromRootRandomly" + " Wrong prob");
             return CFGwithProb.Last().Key;
         }
+
+        //TODO: CFG Storage. 
         Dictionary<List<string>, double> getCFGfromRoot(string s)
         {
             Dictionary<List<string>, double> CFGwithProb = new Dictionary<List<string>, double>(new ListComparer<string>());
@@ -110,10 +115,10 @@ namespace myAntlr
             {
                 for (int i = 0; i < grammarcount.Key.Count; i++)
                 {
-                    Console.Write(grammarcount.Key[i] + " ");
+                    //Console.Write(grammarcount.Key[i] + " ");
                     sw.Write(grammarcount.Key[i] + " ");
                 }
-                Console.WriteLine("\nFrequency: " + grammarcount.Value + "\n----------");
+                //Console.WriteLine("\nFrequency: " + grammarcount.Value + "\n----------");
                 sw.WriteLine("\nFrequency: " + grammarcount.Value + "\n----------");
             }
             Console.WriteLine("Total grammar: " + pCFGlist.Count());

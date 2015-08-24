@@ -17,8 +17,23 @@ namespace myAntlr
         string code = "";
         bool isCFGNode = false;
 
+        Dictionary<string, int> codeTimes = new Dictionary<string, int>();
+        int totalTimes = 0;
+
         List<TSG> children = new List<TSG>();
 
+        public void updateCodeTimes(string simplename)
+        {
+            if (codeTimes.ContainsKey(simplename))
+            {
+                codeTimes[simplename]++;
+            }
+            else
+            {
+                codeTimes.Add(simplename, 1);
+            }
+            totalTimes++;
+        }
         public void editTSG()
         {
             compresschain();
@@ -227,19 +242,17 @@ namespace myAntlr
         public string outputXML()
         {
             string s = "";
-            if (children.Count() == 0)
+            s = s + "<" + name + ">\n";
+            //foreach (string simplename in codeTimes.Keys)
+            foreach (var item in codeTimes.OrderBy(i => i.Value))
             {
-                s = s + "<" + name + ">" + "</" + name + ">" + "\n";
+                s = s + item.Key + ": " + ((double)item.Value / totalTimes) + '\n';
             }
-            else
+            foreach (TSG child in children)
             {
-                s = s + "<" + name + ">" + "\n";
-                foreach (TSG child in children)
-                {
-                    s = s + child.outputXML();
-                }
-                s = s + "</" + name + ">" + "\n";
+                s = s + child.outputXML();
             }
+            s = s + "</" + name + ">\n";
             return s;
         }
     }

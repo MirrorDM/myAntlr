@@ -128,6 +128,8 @@
     <Compile Include="astwalking\ASTWalker.cs" />
     <Compile Include="astwalking\ASTWalkerEvent.cs" />
     <Compile Include="astwalking\FunctionNodeVisitor.cs" />
+    <Compile Include="DetailedXML2TSG.cs" />
+    <Compile Include="EclipseXML2TSG.cs" />
     <Compile Include="SimpleRNG.cs" />
     <Compile Include="cfg\ASTToCFGConverter.cs" />
     <Compile Include="cfg\CFG.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="tests\cfgCreation\CFGCreatorTest.cs" />
     <Compile Include="tests\parseTreeToAST\FunctionContentTestUtil.cs" />
     <Compile Include="TSG.cs" />
-    <Compile Include="XML2TSG.cs" />
+    <Compile Include="DotXML2TSG.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

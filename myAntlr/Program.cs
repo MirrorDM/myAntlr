@@ -28,31 +28,31 @@ namespace myAntlr
         static void Main(string[] args)
         {
             //getASTfromSrc();
-            getASTfromXML();
+            //getASTfromXML();
+            //getASTfromEclipseXML();
+            getASTfromDetailedXML();
         }
-        static void getASTfromXML()
+        static void getASTfromDetailedXML()
         {
-            string directory = "D:\\work\\4ast\\simplexml";
-            DirectoryInfo di = new DirectoryInfo(directory);
-            FileInfo[] files = di.GetFiles("*.xml");
-            List<string> allfiles = new List<string>();
-            foreach (FileInfo f in files)
-            {
-                allfiles.Add(f.FullName);
-            }
+            string directory = "D:\\work\\testprojects\\xml\\xmlfile-detailed";
+            DirectoryWalker walker = new DirectoryWalker(directory, "*.txt");
+            walker.setMaxDepth(10);
+            List<string> allfiles = walker.getAllfiles();
+            Console.WriteLine("Total files: " + allfiles.Count);
 
             List<TSG> srcTSG = new List<TSG>();
             for (int i = 0; i < allfiles.Count; i++)
             {
-                XML2TSG x = new XML2TSG(allfiles[i]);
-                TSG t = x.getTSG();
-                srcTSG.Add(t);
+                //Console.WriteLine("file: " + allfiles[i]);
+                DetailedXML2TSG x = new DetailedXML2TSG(allfiles[i]);
+                srcTSG.AddRange(x.getTSGs());
                 Console.Write("Calculate TSG from XML: " + (i + 1) + " / " + allfiles.Count + '\r');
             }
             Console.WriteLine();
-            Console.WriteLine(srcTSG.Count);
+            Console.WriteLine("Total TSGs: " + srcTSG.Count);
 
-            Console.ReadLine(); //Pause
+            //EclipseXML2TSG x = new EclipseXML2TSG("D:\\work\\testprojects\\xml\\atmosphere-master\\test.txt");
+            //List<TSG> srcTSG = x.getTSGs();
 
             //compresschain & binarization
             foreach (TSG t in srcTSG)
@@ -73,14 +73,133 @@ namespace myAntlr
             sourceASTs = new SourceASTs(srcTSG);
             sourceASTs.outputXML();
             Console.WriteLine("Finish calculate sourceASTs.");
-            Console.ReadLine(); //Pause
+            //Console.ReadLine(); //Pause
 
             PriorPTSG pTSGprior;
             pTSGprior = new PriorPTSG(pCFG);
             pTSGprior.generatePTSG();
             pTSGprior.outputPTSG("PriorPTSG.txt");
             Console.WriteLine("Finish calculate PriorPTSG.");
-            Console.ReadLine(); //Pause
+            //Console.ReadLine(); //Pause
+
+            PostPTSG postPTSG;
+            postPTSG = new PostPTSG(sourceASTs, pTSGprior);
+            postPTSG.calculatePostPTSG();
+            postPTSG.outputpostPTSG("PostPTSG.txt");
+            postPTSG.outputXML();
+            Console.WriteLine("Finish calculate PostPTSG.");
+
+
+        }
+        static void getASTfromEclipseXML()
+        {
+            string directory = "D:\\work\\testprojects\\xml";
+            DirectoryWalker walker = new DirectoryWalker(directory, "*.txt");
+            walker.setMaxDepth(10);
+            List<string> allfiles = walker.getAllfiles();
+            Console.WriteLine("Total files: " + allfiles.Count);
+
+            List<TSG> srcTSG = new List<TSG>();
+            for (int i = 0; i < allfiles.Count; i++)
+            {
+                EclipseXML2TSG x = new EclipseXML2TSG(allfiles[i]);
+                srcTSG.AddRange(x.getTSGs());
+                Console.Write("Calculate TSG from XML: " + (i + 1) + " / " + allfiles.Count + '\r');
+            }
+            Console.WriteLine();
+            Console.WriteLine("Total TSGs: " + srcTSG.Count);
+
+            //EclipseXML2TSG x = new EclipseXML2TSG("D:\\work\\testprojects\\xml\\atmosphere-master\\test.txt");
+            //List<TSG> srcTSG = x.getTSGs();
+
+            //compresschain & binarization
+            foreach (TSG t in srcTSG)
+            {
+                t.editTSG();
+            }
+
+            SrcTSGVisitor TSGvisitor = new SrcTSGVisitor(srcTSG);
+
+
+            PCFG pCFG;
+            SourceASTs sourceASTs;
+
+            TSGvisitor.countContextFreeGrammar();
+            pCFG = TSGvisitor.getPCFG();
+            pCFG.outputPCFG("PCFG.txt");
+            Console.WriteLine("Finish calculate PCFG.");
+            sourceASTs = new SourceASTs(srcTSG);
+            sourceASTs.outputXML();
+            Console.WriteLine("Finish calculate sourceASTs.");
+            //Console.ReadLine(); //Pause
+
+            PriorPTSG pTSGprior;
+            pTSGprior = new PriorPTSG(pCFG);
+            pTSGprior.generatePTSG();
+            pTSGprior.outputPTSG("PriorPTSG.txt");
+            Console.WriteLine("Finish calculate PriorPTSG.");
+            //Console.ReadLine(); //Pause
+
+            PostPTSG postPTSG;
+            postPTSG = new PostPTSG(sourceASTs, pTSGprior);
+            postPTSG.calculatePostPTSG();
+            postPTSG.outputpostPTSG("PostPTSG.txt");
+            postPTSG.outputXML();
+            Console.WriteLine("Finish calculate PostPTSG.");
+
+
+        }
+        static void getASTfromDotXML()
+        {
+            string directory = "D:\\work\\4ast\\simplexml";
+            DirectoryInfo di = new DirectoryInfo(directory);
+            FileInfo[] files = di.GetFiles("*.xml");
+            List<string> allfiles = new List<string>();
+            foreach (FileInfo f in files)
+            {
+                allfiles.Add(f.FullName);
+            }
+
+            List<TSG> srcTSG = new List<TSG>();
+            for (int i = 0; i < allfiles.Count; i++)
+            {
+                DotXML2TSG x = new DotXML2TSG(allfiles[i]);
+                TSG t = x.getTSG();
+                srcTSG.Add(t);
+                Console.Write("Calculate TSG from XML: " + (i + 1) + " / " + allfiles.Count + '\r');
+            }
+            Console.WriteLine();
+            Console.WriteLine(srcTSG.Count);
+
+            //Console.ReadLine(); //Pause
+
+            //compresschain & binarization
+            foreach (TSG t in srcTSG)
+            {
+                t.editTSG();
+            }
+
+            SrcTSGVisitor TSGvisitor = new SrcTSGVisitor(srcTSG);
+
+
+            PCFG pCFG;
+            SourceASTs sourceASTs;
+
+            TSGvisitor.countContextFreeGrammar();
+            pCFG = TSGvisitor.getPCFG();
+            pCFG.outputPCFG("PCFG.txt");
+            Console.WriteLine("Finish calculate PCFG.");
+            sourceASTs = new SourceASTs(srcTSG);
+            sourceASTs.outputXML();
+            Console.WriteLine("Finish calculate sourceASTs.");
+            //Console.ReadLine(); //Pause
+
+            PriorPTSG pTSGprior;
+            pTSGprior = new PriorPTSG(pCFG);
+            pTSGprior.generatePTSG();
+            pTSGprior.outputPTSG("PriorPTSG.txt");
+            Console.WriteLine("Finish calculate PriorPTSG.");
+            //Console.ReadLine(); //Pause
 
             PostPTSG postPTSG;
             postPTSG = new PostPTSG(sourceASTs, pTSGprior);
@@ -101,12 +220,13 @@ namespace myAntlr
 
             // string pt = "C:\\Users\\v-dazou\\Documents\\linux-3.16.1\\sound";
             // string pt = "C:\\Users\\v-dazou\\Documents\\sound";
-            string pt = "D:\\work\\linux-3.18.10\\security";
-            DirectoryWalker walker = new DirectoryWalker(pt);
+            // string pt = "D:\\work\\linux-3.18.10\\security";
+            string pt = "D:\\work\\testprojects";
+            DirectoryWalker walker = new DirectoryWalker(pt, "*.java");
             // for test.
-            walker.setMaxDepth(1);
+            walker.setMaxDepth(20);
             List<string> files = walker.getAllfiles();
-            Console.WriteLine(files.Count);
+            Console.WriteLine("Total files: " + files.Count);
 
             int currentfile = 0;
 
@@ -125,8 +245,9 @@ namespace myAntlr
 
                     Console.Write(currentfile + " / " + files.Count + " ");
                     currentfile++;
-                    Console.WriteLine("time: " + stw.Elapsed.Hours.ToString("D2") + ":" + stw.Elapsed.Minutes.ToString("D2") + ":" + stw.Elapsed.Seconds.ToString("D2"));
+                    Console.Write("time: " + stw.Elapsed.Hours.ToString("D2") + ":" + stw.Elapsed.Minutes.ToString("D2") + ":" + stw.Elapsed.Seconds.ToString("D2") + '\r');
                 }
+                Console.WriteLine();
 
                 // binarization && compress chain
                 Console.WriteLine("Start binarization && compress chain");
@@ -135,7 +256,7 @@ namespace myAntlr
                 foreach (FunctionNode fnode in functionlist)
                 {
                     fnode.editAST();
-                    Console.WriteLine("Processing: " + curfunction + " / " + countfunction);
+                    Console.Write("Processing: " + curfunction + " / " + countfunction + '\r');
                     curfunction++;
 
                     //The below process is done in editAST().
@@ -143,6 +264,7 @@ namespace myAntlr
                     //fnode.compresschain();
                     //fnode.binarization();
                 }
+                Console.WriteLine();
                 Console.WriteLine("Finish binarization && compress chain");
 
                 Console.WriteLine("total functions: " + functionlist.Count);
@@ -158,7 +280,7 @@ namespace myAntlr
             {
                 // PCFG
                 Console.WriteLine("Start calculate PCFG, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 FunctionTreeVisitor funcvisitor = new FunctionTreeVisitor(functionlist);
                 funcvisitor.countContextFreeGrammar();
                 //funcvisitor.printGrammar();
@@ -174,7 +296,7 @@ namespace myAntlr
 
                 // SourceASTs
                 Console.WriteLine("Start calculate SourceASTs, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 sourceASTs = new SourceASTs(funcvisitor);
                 // Start Serialize SourceASTs
                 serializationformatter = new BinaryFormatter();
@@ -187,7 +309,7 @@ namespace myAntlr
             else
             {
                 Console.WriteLine("Start read PCFG from PCFG.bin, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 serializationformatter = new BinaryFormatter();
                 serializationstream = new FileStream("PCFG.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
                 pCFG = (PCFG)serializationformatter.Deserialize(serializationstream);
@@ -195,7 +317,7 @@ namespace myAntlr
                 Console.WriteLine("Finish read PCFG.");
 
                 Console.WriteLine("Start read SourceASTs from SourceASTs.bin, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 Console.WriteLine("Reading SourceASTs.....");
                 serializationformatter = new BinaryFormatter();
                 serializationstream = new FileStream("SourceASTs.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -213,7 +335,7 @@ namespace myAntlr
             if (calculatePriorPTSG == 1 || useAntlr == 1)
             {
                 Console.WriteLine("Start calculate PriorPTSG, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 pTSGprior = new PriorPTSG(pCFG);
                 pTSGprior.generatePTSG();
                 //pTSGprior.outputPTSG();
@@ -229,7 +351,7 @@ namespace myAntlr
             else
             {
                 Console.WriteLine("Start read PriorPTSG from PriorPTSG.bin, Press Enter to continue.");
-                Console.ReadLine(); //Pause
+                //Console.ReadLine(); //Pause
                 serializationformatter = new BinaryFormatter();
                 serializationstream = new FileStream("PriorPTSG.bin", FileMode.Open, FileAccess.Read, FileShare.Read);
                 pTSGprior = (PriorPTSG)serializationformatter.Deserialize(serializationstream);
@@ -245,7 +367,7 @@ namespace myAntlr
             //Console.WriteLine(tmp.getSequence());
 
             Console.WriteLine("Start calculate PostPTSG, Press Enter to continue.");
-            Console.ReadLine(); //Pause
+            //Console.ReadLine(); //Pause
             PostPTSG postPTSG = new PostPTSG(sourceASTs, pTSGprior);
             postPTSG.calculatePostPTSG();
             postPTSG.outputpostPTSG("PostPTSG.txt");

@@ -13,13 +13,15 @@ namespace myAntlr
         Dictionary<string, int> rootcount = new Dictionary<string, int>();
         Dictionary<string, double> finalpTSG = new Dictionary<string, double>();
         Dictionary<string, double> p0;
+        Dictionary<string, TSG> idioms = new Dictionary<string, TSG>();
+
         double alpha = 5;
         SourceASTs asts;
         Random rand = new Random();
 
-        const int getTSGtimes = 100000;
+        const int getTSGtimes = 200000;
         const int iterationOfEachTSG = 1;
-        const int ignoreThreshold = 4;
+        const int ignoreThreshold = 10;
 
         public PostPTSG(SourceASTs sourceasts, PriorPTSG prior)
         {
@@ -33,7 +35,7 @@ namespace myAntlr
         {
             for (int i = 0; i < getTSGtimes; i++)
             {
-                Console.WriteLine(i + " / " + getTSGtimes + "Processing.");
+                Console.Write("PostPTSG(MCMC) Processing: " + i + " / " + getTSGtimes + '\r');
 
                 calculateOneTSG();
             }
@@ -83,7 +85,8 @@ namespace myAntlr
             foreach (var item in finalpTSG.OrderBy(i => i.Value))
             {
                 String path = "idioms\\" + n.ToString() + ".xml";
-                TSG t = getTSGfromSequence(item.Key);
+                //TSG t = getTSGfromSequence(item.Key);
+                TSG t = idioms[item.Key];
                 StreamWriter sw = new StreamWriter(path);
                 string stringxml = t.outputXML();
                 sw.WriteLine(stringxml);
@@ -93,7 +96,6 @@ namespace myAntlr
             }
             prob.Close();
         }
-
         public static TSG getTSGfromSequence(string sequence)
         {
             TSG r = new TSG();
@@ -300,8 +302,61 @@ namespace myAntlr
             res = (count_t + alpha * p0_t) / (count_root_t + alpha);
             return res;
         }
+
+        void updateCode(TSG t)
+        {   
+            string seq = t.getSequence();
+            TSG tcode;
+            if (idioms.ContainsKey(seq))
+            {
+                tcode = idioms[seq];
+            }
+            else
+            {
+                tcode = getTSGfromSequence(seq);
+                idioms.Add(seq, tcode);
+            }
+            Queue<TSG> queue = new Queue<TSG>();
+            Queue<TSG> qcode = new Queue<TSG>();
+            queue.Enqueue(t);
+            qcode.Enqueue(tcode);
+            TSG cur;
+            TSG curcode;
+            List<TSG> cur_children;
+            List<TSG> curcode_children;
+            while (queue.Count > 0)
+            {
+                if (queue.Count != qcode.Count)
+                {
+                    Console.WriteLine("Error! PostPTSG.cs, updateCode");
+                    Console.ReadLine();//Pause;
+                }
+                cur = queue.Dequeue();
+                curcode = qcode.Dequeue();
+                cur_children = cur.getChildren();
+                curcode_children = curcode.getChildren();
+
+                if (cur.getName() == "SimpleName")
+                {
+                    string simplename = cur.getCode();
+                    curcode.updateCodeTimes(simplename);
+                }
+                if (cur.getIsNewFragment() == 0)
+                {
+                    foreach (TSG c in cur_children)
+                    {
+                        queue.Enqueue(c);
+                    }
+                }
+                foreach (TSG c in curcode_children)
+                {
+                    qcode.Enqueue(c);
+                }
+            }
+        }
         void updateTSGcount(TSG t)
         {
+            updateCode(t);
             string seq = t.getSequence();
             if (TSGcount.ContainsKey(seq))
             {

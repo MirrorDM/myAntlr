@@ -7,16 +7,15 @@ using System.Xml;
 
 namespace myAntlr
 {
-    class XML2TSG
+    class DotXML2TSG
     {
         string xmlpath;
         XmlDocument doc;
         Dictionary<int, TSG> num_node = new Dictionary<int, TSG>();
         Dictionary<string, int> id_num = new Dictionary<string, int>();
-        public XML2TSG(string s)
+        public DotXML2TSG(string s)
         {
             xmlpath = s;
-
         }
         void initXML()
         {

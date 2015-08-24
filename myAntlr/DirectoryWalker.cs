@@ -10,6 +10,7 @@ namespace myAntlr
     public class DirectoryWalker
     {
         string rootdirectory = "";
+        string fileextension = "";
         int maxdepth = 1000;
         List<string> allfiles = new List<string>();
 
@@ -18,9 +19,10 @@ namespace myAntlr
             maxdepth = d;
         }
         
-        public DirectoryWalker(string di)
+        public DirectoryWalker(string di, string extension)
         {
             rootdirectory = di;
+            fileextension = extension;
         }
 
         public List<string> getAllfiles()
@@ -38,7 +40,7 @@ namespace myAntlr
 
             try
             {
-                files = rootdir.GetFiles("*.c");
+                files = rootdir.GetFiles(fileextension);
             }
             // This is thrown if even one of the files requires permissions greater
             // than the application provides.
